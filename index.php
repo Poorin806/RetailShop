@@ -6,7 +6,7 @@
     <title>Retail Shop</title>
 
     <!-- Essentials Css -->
-    <?php include_once "css.php"; ?>
+    <?php include_once "import/css.php"; ?>
 </head>
 <body>
 
@@ -42,6 +42,6 @@
     </nav>
 
     <!-- Essentials JS -->
-    <?php include_once "js.php"; ?>
+    <?php include_once "import/js.php"; ?>
 </body>
 </html>
