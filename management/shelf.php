@@ -17,10 +17,7 @@
         <div class="card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
             <div class="card-header d-flex flex-column flex-sm-row align-items-center justify-content-between row-gap-1">
                 <div>
-                    <h1 class="fs-4 fw-bold m-0 p-0">
-                        <i class="bi bi-flag-fill"></i>
-                        จัดการข้อมูลจังหวัด
-                    </h1>
+                    <h1 class="fs-4 fw-bold m-0 p-0">จัดการข้อมูลชั้นวางสินค้า</h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
                     <input type="text" name="ProvinceID" class="form-control" placeholder="จังหวัด" style="width: 200px;">
