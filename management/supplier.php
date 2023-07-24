@@ -18,12 +18,12 @@
             <div class="card-header d-flex flex-column flex-sm-row align-items-center justify-content-between row-gap-1">
                 <div>
                     <h1 class="fs-4 fw-bold m-0 p-0">
-                        <i class="bi bi-bookshelf"></i>
-                        จัดการข้อมูลชั้นวางสินค้า
+                        <i class="bi bi-person-badge-fill"></i>
+                        จัดการข้อมูลตัวแทนจำหน่าย
                     </h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
-                    <input type="text" name="ID" class="form-control" placeholder="ชั้นวางสินค้า" style="width: 200px;">
+                    <input type="text" name="ID" class="form-control" placeholder="ตัวแทนจำหน่าย" style="width: 200px;">
                     <input type="submit" value="ค้นหา" class="btn btn-primary">
                 </div>
             </div>
@@ -32,14 +32,22 @@
                 <table class="table table-striped table-hover mx-auto align-middle">
                     <thead>
                         <tr class="bg-dark">
-                            <th class="fw-bold" style="width: 20%;">รหัสชั้นวาง</th>
-                            <th class="fw-bold" style="width: 50%;">ประเภทชั้นวาง</th>
-                            <th class="text-end" style="width: 30%;">จัดการ</th>
+                            <th class="fw-bold" style="width: 15%;">รหัสตัวแทนจำหน่าย</th>
+                            <th class="fw-bold" style="width: 20%;">ชื่อร้าน</th>
+                            <th class="fw-bold" style="width: 10%;">ที่อยู่</th>
+                            <th class="fw-bold" style="width: 10%;">เบอร์โทร</th>
+                            <th class="fw-bold" style="width: 15%;">จังหวัด</th>
+                            <th class="fw-bold" style="width: 10%;">ชื่อผู้ติดต่อ</th>
+                            <th class="text-end" style="width: 20%;">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>1</th>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
                             <td>Mark</td>
                             <td class="text-end">
                                 <a href="#" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>

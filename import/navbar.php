@@ -16,12 +16,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item text-light" href="/RetailShop/management/province.php">จัดการ จังหวัด</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ชั้นวางสินค้า</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ประเภทสินค้า</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ข้อมูลพนักงาน</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ข้อมูลลูกค้า</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ข้อมูลตัวแทนจำหน่าย</a></li>
-                            <li><a class="dropdown-item text-light" href="#">จัดการ ข้อมูลสินค้า</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/shelf.php">จัดการ ชั้นวางสินค้า</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/product_category.php">จัดการ ประเภทสินค้า</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/employee.php">จัดการ ข้อมูลพนักงาน</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/customer.php">จัดการ ข้อมูลลูกค้า</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/supplier.php">จัดการ ข้อมูลตัวแทนจำหน่าย</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/product.php">จัดการ ข้อมูลสินค้า</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

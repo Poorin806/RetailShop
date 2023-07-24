@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retail Shop - Province Management</title>
+    <title>Retail Shop - Management</title>
 
     <!-- Essentials Css Icons -->
     <?php include_once "../import/css.php"; ?>
@@ -23,7 +23,7 @@
                     </h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
-                    <input type="text" name="ProvinceID" class="form-control" placeholder="จังหวัด" style="width: 200px;">
+                    <input type="text" name="ID" class="form-control" placeholder="จังหวัด" style="width: 200px;">
                     <input type="submit" value="ค้นหา" class="btn btn-primary">
                 </div>
             </div>
@@ -61,6 +61,11 @@
                 <p class="m-0 p-0">สรุป: ...</p>
             </div>
         </div>
+    </div>
+
+    <!-- Totoal Summarize -->
+    <div class="container fixed-bottom mb-5">
+        <p class="bg-secondary text-light p-2 m-0 rounded fw-bolder fs-6 position-absolute end-0 bottom-50" style="width: fit-content;">สรุปอะไรก็ตามแต่ xx หน่่วย</p>
     </div>
 
     <!-- Essentials JS -->

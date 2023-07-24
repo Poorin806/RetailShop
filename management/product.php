@@ -18,12 +18,12 @@
             <div class="card-header d-flex flex-column flex-sm-row align-items-center justify-content-between row-gap-1">
                 <div>
                     <h1 class="fs-4 fw-bold m-0 p-0">
-                        <i class="bi bi-bookshelf"></i>
-                        จัดการข้อมูลชั้นวางสินค้า
+                        <i class="bi bi-cart-fill"></i>
+                        จัดการข้อมูลสินค้า
                     </h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
-                    <input type="text" name="ID" class="form-control" placeholder="ชั้นวางสินค้า" style="width: 200px;">
+                    <input type="text" name="ID" class="form-control" placeholder="สินค้า" style="width: 200px;">
                     <input type="submit" value="ค้นหา" class="btn btn-primary">
                 </div>
             </div>
@@ -32,14 +32,30 @@
                 <table class="table table-striped table-hover mx-auto align-middle">
                     <thead>
                         <tr class="bg-dark">
-                            <th class="fw-bold" style="width: 20%;">รหัสชั้นวาง</th>
-                            <th class="fw-bold" style="width: 50%;">ประเภทชั้นวาง</th>
-                            <th class="text-end" style="width: 30%;">จัดการ</th>
+                            <th class="fw-bold">รหัสสินค้า</th>
+                            <th class="fw-bold">ชื่อสินค้า</th>
+                            <th class="fw-bold">ราคา (ต้นทุน)</th>
+                            <th class="fw-bold">ราคา (ขาย)</th>
+                            <th class="fw-bold">ราคา (ขายสมาชิก)</th>
+                            <th class="fw-bold">จำนวน</th>
+                            <th class="fw-bold">ประเภท</th>
+                            <th class="fw-bold">ชั้นวาง</th>
+                            <th class="fw-bold">ตัวแทนจำหน่าย</th>
+                            <th class="fw-bold">จุดที่ขาย</th>
+                            <th class="text-end">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>1</th>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
+                            <td>Mark</td>
                             <td>Mark</td>
                             <td class="text-end">
                                 <a href="#" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
