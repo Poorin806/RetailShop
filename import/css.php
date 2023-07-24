@@ -6,3 +6,6 @@
 
 <!-- SweetAlert JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Website Main Icon -->
+<link rel="shortcut icon" href="image/TATC.png" type="image/x-icon">

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Shop</title>
 
-    <!-- Essentials Css -->
+    <!-- Essentials Css Icons -->
     <?php include_once "import/css.php"; ?>
 </head>
 <body>
