@@ -29,7 +29,7 @@
                             จัดการสินค้า
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item text-light" href="#">ขายสินค้า</a></li>
+                            <li><a class="dropdown-item text-light" href="/RetailShop/management/sale.php">ขายสินค้า</a></li>
                             <li><a class="dropdown-item text-light" href="#">คืนสินค้า</a></li>
                         </ul>
                     </li>

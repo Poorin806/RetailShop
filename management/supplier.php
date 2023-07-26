@@ -50,7 +50,7 @@
                             <td>Mark</td>
                             <td>Mark</td>
                             <td class="text-end">
-                                <a href="#" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
+                                <a href="edit_supplier.php" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
                                 <a href="#" class="text-decoration-none fs-3"><i class="bi bi-trash-fill text-danger"></i></a>
                             </td>
                         </tr>
