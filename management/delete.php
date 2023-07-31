@@ -51,6 +51,89 @@
                         });
                     </script>";
         }
+        else if (isset($_GET['Product_Category'])) {
+            $ID = $_GET['Product_Category'];
+        
+            $sql = "DELETE FROM product_category WHERE Cate_id = '$ID'";
+            $con->query($sql);
+
+            echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='product_category.php'
+                        });
+                    </script>";
+        }
+        else if (isset($_GET['Employee'])) {
+            $ID = $_GET['Employee'];
+        
+            $sql = "DELETE FROM employee WHERE Emp_id = '$ID'";
+            $con->query($sql);
+
+            echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='employee.php'
+                        });
+                    </script>";
+        }
+        else if (isset($_GET['Supplier'])) {
+            $ID = $_GET['Supplier'];
+        
+            $sql = "DELETE FROM supplier WHERE Sup_id = '$ID'";
+            $con->query($sql);
+
+            echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='supplier.php'
+                        });
+                    </script>";
+        }
+        else if (isset($_GET['Product'])) {
+            $ID = $_GET['Product'];
+        
+            $sql = "DELETE FROM product WHERE Pro_id = '$ID'";
+            $con->query($sql);
+
+            echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='product.php'
+                        });
+                    </script>";
+        }
+        else if (isset($_GET['Customer'])) {
+            $ID = $_GET['Customer'];
+        
+            $sql = "DELETE FROM Customer WHERE Cust_id = '$ID'";
+            $con->query($sql);
+
+            echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='customer.php'
+                        });
+                    </script>";
+        }
+        else {
+            echo "<script>window.location='../index.php'</script>";
+        }
     ?>
 
 </body>

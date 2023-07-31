@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จัดการข้อมูลจังหวัด</title>
+    <title>Retail Shop - Management</title>
     <!-- Essentials Css Icons -->
     <?php include_once "../import/css.php"; ?>
 

@@ -21,7 +21,7 @@
     <?php include_once "../import/navbar.php" ?>
 
     <div class="mt-5 container">
-        <div class="card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+        <div class="card mb-5" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
             <div class="card-header d-flex flex-column flex-sm-row align-items-center justify-content-between row-gap-1">
                 <div>
                     <h1 class="fs-4 fw-bold m-0 p-0">
@@ -79,7 +79,8 @@
         <p class="bg-secondary text-light p-2 m-0 rounded fw-bolder fs-6 position-absolute end-0 bottom-50" style="width: fit-content;">ชั้นวางทั้งหมด <?php echo $all_rows ?> ที่</p>
     </div>
 
-    <!-- Essentials JS --><script>
+    <!-- Essentials JS -->
+    <script>
 
         function deleteConfirm(id) {
             Swal.fire({

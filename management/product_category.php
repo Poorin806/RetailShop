@@ -1,3 +1,10 @@
+<?php
+
+    // Connection
+    include_once('../import/connect.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +21,7 @@
     <?php include_once "../import/navbar.php" ?>
 
     <div class="mt-5 container">
-        <div class="card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+        <div class="card mb-5" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
             <div class="card-header d-flex flex-column flex-sm-row align-items-center justify-content-between row-gap-1">
                 <div>
                     <h1 class="fs-4 fw-bold m-0 p-0">
@@ -23,8 +30,8 @@
                     </h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
-                    <input type="text" name="ID" class="form-control" placeholder="ประเภทสินค้า" style="width: 200px;">
-                    <input type="submit" value="ค้นหา" class="btn btn-primary">
+                    <input type="text" name="ID" id="searchProductCategory" class="form-control" placeholder="ค้นหาประเภทสินค้า" style="width: 200px;">
+                    <a href="add_product_category.php" class="btn btn-primary">เพิ่มข้อมูล</a>
                 </div>
             </div>
             <!-- Table -->
@@ -38,35 +45,113 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>Mark</td>
-                            <td class="text-end">
-                                <a href="edit_product_category.php" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
-                                <a href="#" class="text-decoration-none fs-3"><i class="bi bi-trash-fill text-danger"></i></a>
-                            </td>
-                        </tr>
+                        <?php
+                            $sql = "SELECT * FROM product_category";
+                            $result = $con->query($sql);
+                            while ($data = mysqli_fetch_array($result)) {
+                                ?>
+                                <tr>
+                                    <th><?php echo $data['Cate_id'] ?></th>
+                                    <th><?php echo $data['Cate_name'] ?></th>
+                                    <td class="text-end">
+                                        <a href="edit_product_category.php?ID=<?php echo $data['Cate_id'] ?>" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
+                                        <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm('<?php echo $data['Cate_id'] ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        ?>
                     </tbody>
                 </table>
-
-                <!-- Add New -->
-                <div class="text-end my-2">
-                    <a href="#" class="btn btn-success">เพิ่มข้อมูล</a>
-                </div>
             </div>
             <!-- Footer Summarize -->
             <div class="card-footer text-end">
-                <p class="m-0 p-0">สรุป: ...</p>
+                <?php
+                    $all_rows = mysqli_num_rows($result);
+                ?>
+                <p class="m-0 p-0">สรุป: <?php echo $all_rows ?> ประเภท</p>
             </div>
         </div>
     </div>
 
     <!-- Totoal Summarize -->
     <div class="container fixed-bottom mb-5">
-        <p class="bg-secondary text-light p-2 m-0 rounded fw-bolder fs-6 position-absolute end-0 bottom-50" style="width: fit-content;">สรุปอะไรก็ตามแต่ xx หน่่วย</p>
+        <p class="bg-secondary text-light p-2 m-0 rounded fw-bolder fs-6 position-absolute end-0 bottom-50" style="width: fit-content;">ประเภทสินค้าทั้งหมด <?php echo $all_rows ?> ประเภท</p>
     </div>
 
     <!-- Essentials JS -->
+    <script>
+
+        function deleteConfirm(id) {
+            Swal.fire({
+                icon: 'question',
+                title: 'ต้องการที่จะลบข้อมูลจริงหรือไม่?',
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก',
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.location = 'delete.php?Product_Category=' + id
+                }
+            })
+        }                            
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('searchProductCategory');
+            const resultTable = document.querySelector('table tbody');
+
+            searchInput.addEventListener('input', function () {
+                const searchText = searchInput.value.trim();
+                if (searchText === '') {
+                    // ถ้าไม่มีข้อความในช่องค้นหาให้แสดงข้อมูลทั้งหมดอีกครั้ง
+                    fetchAndShowData();
+                } else {
+                    // ถ้ามีข้อความในช่องค้นหาให้ส่งคำค้นหาไปหาเซิร์ฟเวอร์
+                    fetchAndShowData(searchText);
+                }
+            });
+
+            function fetchAndShowData(searchText = '') {
+                // ส่งคำค้นหาไปหาเซิร์ฟเวอร์ด้วย AJAX
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            // แสดงผลลัพธ์ที่ได้รับกลับมา
+                            showData(data);
+                        } else {
+                            console.error('เกิดข้อผิดพลาดในการค้นหา: ' + xhr.status);
+                        }
+                    }
+                };
+                xhr.open('GET', 'searching.php?product_category_search=' + encodeURIComponent(searchText));
+                xhr.send();
+            }
+
+            function showData(data) {
+                // แสดงผลลัพธ์ในตาราง
+                let html = '';
+                for (const row of data) {
+                    html += `<tr>
+                                <th>${row.Cate_id}</th>
+                                <td>${row.Cate_name}</td>
+                                <td class="text-end">
+                                    <a href="edit_product_category.php?ID=${row.Cate_id}" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
+                                    <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm('${row.Cate_id}')"><i class="bi bi-trash-fill text-danger"></i></a>
+                                </td>
+                            </tr>`;
+                }
+                resultTable.innerHTML = html;
+            }
+
+            // โหลดข้อมูลเริ่มต้นเมื่อหน้าเว็บโหลด
+            fetchAndShowData();
+        });
+    </script>
+
+    
     <?php include_once "../import/js.php"; ?>
 </body>
 </html>
