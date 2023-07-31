@@ -17,9 +17,12 @@
         // ส่งข้อมูลกลับในรูปแบบ JSON
         header('Content-Type: application/json');
         echo json_encode($data);
-    } else {
-        // ถ้าไม่มีคำค้นหาส่งกลับข้อมูลทั้งหมด
-        $sql = "SELECT * FROM Province";
+    }
+    else if (isset($_GET['shelf_search'])) {
+        $searchText = $_GET['shelf_search'];
+
+        // Query ข้อมูลจังหวัดที่ตรงตามคำค้นหา
+        $sql = "SELECT * FROM Shelf WHERE Shelf_name LIKE '%$searchText%'";
         $result = $con->query($sql);
 
         $data = [];

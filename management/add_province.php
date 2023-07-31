@@ -3,11 +3,6 @@
     // Connection
     include_once('../import/connect.php');
 
-    //If come to this page without ID parameter
-    if (!isset($_GET['ID'])) {
-        echo "<script>window.location='province.php'</script>";
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -31,16 +26,14 @@
         if (isset($_POST['submit'])) {
             $ID = $_POST['Province_id'];
             $Name = $_POST['Province_name'];
-            $Name_old = $_POST['Province_name_old'];
         
-            $sql = "UPDATE Province SET Province_name = '$Name' WHERE Province_id = '$ID'";
+            $sql = "INSERT INTO Province VALUES ($ID, '$Name')";
             $con->query($sql);
 
             echo "<script>
                         Swal.fire({
                             icon: 'success',
-                            title: 'แก้ไขข้อมูลสำเร็จ',
-                            text: 'จาก $Name_old เป็น $Name',
+                            title: 'เพิ่มข้อมูลสำเร็จ',
                             confirmButtonText: 'ตกลง'
                         }).then((result) => {
                             window.location='province.php'
@@ -51,25 +44,24 @@
     <div class="container my-5">
         <div class="title mb-3">
             <div class="text">
-                <h1>แก้ไขข้อมูล<h class="text-primary">จังหวัด</h></h1>
-                <h6>Edit Province Data</h6>
+                <h1>เพิ่มข้อมูล<h class="text-primary">จังหวัด</h></h1>
+                <h6>Add New Province Data</h6>
             </div>
         </div>
-        <form action="<?php echo $_SERVER['PHP_SELF'] . "?ID=" . $_GET['ID'] ?>" method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
             <?php
-                $sql = "SELECT * FROM Province WHERE Province_id = " . $_GET['ID'];
+                $sql = "SELECT * FROM Province";
                 $result = $con->query($sql);
-                $data = mysqli_fetch_array($result);
+                $NewID = mysqli_num_rows($result) + 1;
             ?>
             <div class="row">
                 <div class="col-sm mb-3">
                     <label for="" class="form-label">รหัสจังหวัด</label>
-                    <input type="text" name="Province_id" class="form-control bg-body-secondary" value="<?php echo $_GET['ID'] ?>" readonly>
+                    <input type="text" name="Province_id" class="form-control bg-body-secondary" value="<?php echo $NewID ?>" readonly>
                 </div>
                 <div class="col-sm mb-3">
                     <label for="" class="form-label">ชื่อจังหวัด</label>
-                    <input type="text" name="Province_name" class="form-control" placeholder="ชื่อจังหวัด" value="<?php echo $data['Province_name'] ?>" required>
-                    <input type="text" name="Province_name_old" class="form-control" placeholder="ชื่อจังหวัด" value="<?php echo $data['Province_name'] ?>" hidden>
+                    <input type="text" name="Province_name" class="form-control" placeholder="ชื่อจังหวัด" required>
                 </div>
                 <!-- <div class="col-sm mb-3">
                     <label for="" class="form-label">รหัสกลุ่มจังหวัด</label>

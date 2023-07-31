@@ -30,8 +30,8 @@
                     </h1>
                 </div>
                 <div class="d-flex align-items-center column-gap-3">
-                    <input type="text" name="ID" id="searchProvince" class="form-control" placeholder="จังหวัด" style="width: 200px;">
-                    <input type="submit" value="ค้นหา" class="btn btn-primary">
+                    <input type="text" name="ID" id="searchProvince" class="form-control" placeholder="ค้นหาจังหวัด" style="width: 200px;">
+                    <a href="add_province.php" class="btn btn-primary">เพิ่มข้อมูล</a>
                 </div>
             </div>
             <!-- Table -->
@@ -57,7 +57,7 @@
                                     <!-- <td>Otto</td> -->
                                     <td class="text-end">
                                         <a href="edit_province.php?ID=<?php echo $data['Province_id'] ?>" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
-                                        <a href="#" class="text-decoration-none fs-3"><i class="bi bi-trash-fill text-danger"></i></a>
+                                        <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm(<?php echo $data['Province_id'] ?>)"><i class="bi bi-trash-fill text-danger"></i></a>
                                     </td>
                                 </tr>
                                 <?php
@@ -65,11 +65,6 @@
                         ?>
                     </tbody>
                 </table>
-
-                <!-- Add New -->
-                <div class="text-end my-2">
-                    <a href="#" class="btn btn-success">เพิ่มข้อมูล</a>
-                </div>
             </div>
             <!-- Footer Summarize -->
             <div class="card-footer text-end">
@@ -88,6 +83,22 @@
 
     <!-- Essentials JS -->
     <script>
+
+        function deleteConfirm(id) {
+            Swal.fire({
+                icon: 'question',
+                title: 'ต้องการที่จะลบข้อมูลจริงหรือไม่?',
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก',
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.location = 'delete.php?Province=' + id
+                }
+            })
+        }                            
+
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById('searchProvince');
             const resultTable = document.querySelector('table tbody');
@@ -130,7 +141,7 @@
                                 <td>${row.Province_name}</td>
                                 <td class="text-end">
                                     <a href="edit_province.php?ID=${row.Province_id}" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
-                                    <a href="#" class="text-decoration-none fs-3"><i class="bi bi-trash-fill text-danger"></i></a>
+                                    <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm(${row.Province_id})"><i class="bi bi-trash-fill text-danger"></i></a>
                                 </td>
                             </tr>`;
                 }

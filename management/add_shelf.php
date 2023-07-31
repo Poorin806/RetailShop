@@ -3,11 +3,6 @@
     // Connection
     include_once('../import/connect.php');
 
-    //If come to this page without ID parameter
-    if (!isset($_GET['ID'])) {
-        echo "<script>window.location='province.php'</script>";
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -29,21 +24,19 @@
     <?php
         // If edited
         if (isset($_POST['submit'])) {
-            $ID = $_POST['Province_id'];
-            $Name = $_POST['Province_name'];
-            $Name_old = $_POST['Province_name_old'];
+            $ID = $_POST['Shelf_no'];
+            $Name = $_POST['Shelf_name'];
         
-            $sql = "UPDATE Province SET Province_name = '$Name' WHERE Province_id = '$ID'";
+            $sql = "INSERT INTO Shelf VALUES ('$ID', '$Name')";
             $con->query($sql);
 
             echo "<script>
                         Swal.fire({
                             icon: 'success',
-                            title: 'แก้ไขข้อมูลสำเร็จ',
-                            text: 'จาก $Name_old เป็น $Name',
+                            title: 'เพิ่มข้อมูลสำเร็จ',
                             confirmButtonText: 'ตกลง'
                         }).then((result) => {
-                            window.location='province.php'
+                            window.location='shelf.php'
                         });
                     </script>";
         }        
@@ -51,25 +44,26 @@
     <div class="container my-5">
         <div class="title mb-3">
             <div class="text">
-                <h1>แก้ไขข้อมูล<h class="text-primary">จังหวัด</h></h1>
-                <h6>Edit Province Data</h6>
+                <h1>เพิ่มข้อมูล<h class="text-primary">ชั้นวางสินค้า</h></h1>
+                <h6>Add New Shelf Data</h6>
             </div>
         </div>
-        <form action="<?php echo $_SERVER['PHP_SELF'] . "?ID=" . $_GET['ID'] ?>" method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
             <?php
-                $sql = "SELECT * FROM Province WHERE Province_id = " . $_GET['ID'];
+                $sql = "SELECT * FROM Shelf";
                 $result = $con->query($sql);
-                $data = mysqli_fetch_array($result);
+                $NewID_temp = mysqli_num_rows($result) + 1;
+                $NewID_temp = str_pad($NewID_temp, 2, '0', STR_PAD_LEFT);
+                $NewID = "SH" . $NewID_temp;
             ?>
             <div class="row">
                 <div class="col-sm mb-3">
-                    <label for="" class="form-label">รหัสจังหวัด</label>
-                    <input type="text" name="Province_id" class="form-control bg-body-secondary" value="<?php echo $_GET['ID'] ?>" readonly>
+                    <label for="" class="form-label">รหัสชั้นวาง</label>
+                    <input type="text" name="Shelf_no" class="form-control bg-body-secondary" value="<?php echo $NewID ?>">
                 </div>
                 <div class="col-sm mb-3">
-                    <label for="" class="form-label">ชื่อจังหวัด</label>
-                    <input type="text" name="Province_name" class="form-control" placeholder="ชื่อจังหวัด" value="<?php echo $data['Province_name'] ?>" required>
-                    <input type="text" name="Province_name_old" class="form-control" placeholder="ชื่อจังหวัด" value="<?php echo $data['Province_name'] ?>" hidden>
+                    <label for="" class="form-label">ชื่อชั้นวาง</label>
+                    <input type="text" name="Shelf_name" class="form-control" placeholder="ชื่อชั้นวาง" required>
                 </div>
                 <!-- <div class="col-sm mb-3">
                     <label for="" class="form-label">รหัสกลุ่มจังหวัด</label>
@@ -80,7 +74,7 @@
             </div>
             <input type="submit" value="บันทึก" class="btn btn-primary" name="submit">
             <!-- <input type="submit" value="ยกเลิก" class="btn btn-secondary" name="cancel"> -->
-            <a href="province.php" class="btn btn-secondary">ยกเลิก</a>
+            <a href="shelf.php" class="btn btn-secondary">ยกเลิก</a>
         </form>
     </div>
 
