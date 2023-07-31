@@ -99,7 +99,7 @@
                             $result = $con->query($sql);
                             while ($temp_data = mysqli_fetch_array($result)) {
                                 ?>
-                                <option value="<?php echo $temp_data['Cate_id']; ?>"><?php echo $temp_data['Cate_id']; ?></option>
+                                <option value="<?php echo $temp_data['Cate_id']; ?>"><?php echo $temp_data['Cate_name']; ?></option>
                                 <?php
                             }
                         ?>

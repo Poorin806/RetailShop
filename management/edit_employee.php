@@ -77,16 +77,16 @@
                     <label class="form-label">สถานะ</label>
                     <select name="Emp_status" class="form-select" required>
                         <option value="" selected>เลือกสถานะ...</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option <?php if ($data['Emp_status'] == 1) { echo "selected"; }  ?> value="1">1</option>
+                        <option <?php if ($data['Emp_status'] == 2) { echo "selected"; }  ?> value="2">2</option>
                     </select>
                 </div>
                 <div class="col-sm mb-3">
                     <label class="form-label">ประเภทพนักงาน</label>
                     <select name="Emp_type" class="form-select" required>
                         <option value="" selected>เลือกประเภทพนักงาน...</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option <?php if ($data['Emp_type'] == 1) { echo "selected"; }  ?> value="1">1</option>
+                        <option <?php if ($data['Emp_type'] == 2) { echo "selected"; }  ?> value="2">2</option>
                     </select>
                 </div>
                 <div class="col-sm-6 mb-3">
