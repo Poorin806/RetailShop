@@ -8,10 +8,8 @@ window.addEventListener("beforeunload", function (event) {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             if (xhr.responseText == true) {
                 alert('ยกเลิกรายการสำเร็จ');
-                window.location.reload();
             } else {
                 alert('ยกเลิกรายการไม่สำเร็จ');
-                window.location.reload();
             }
         }
     };
