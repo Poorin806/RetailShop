@@ -9,6 +9,9 @@ $latest_saleId = $row_lastestSaleId['sale_id'];
 if ($latest_saleId == null) {
     $latest_saleId = 'ไม่มีรหัสการขายก่อนหน้า';
 }
+else {
+    $latest_saleId_AutoGenerate = "SA" . preg_replace('/\D/', '', $latest_saleId) + 1;    //Auto generated Sale ID
+}
 
 if (isset($_POST['confirmSale'])) {
     $sale_id = $_POST['sale_id_hidden'];
@@ -85,12 +88,21 @@ if (isset($_POST['cancelSale'])) {
                 </div>
                 <div class="col-sm-2">
                     <label for="" class="form-label">รหัสการขาย</label>
-                    <input type="text" name="sale_id" id="sale_id" class="form-control">
+                    <input type="text" name="sale_id" id="sale_id" class="form-control bg-body-secondary" value="<?php echo $latest_saleId_AutoGenerate ?>" readonly>
                     <input type="hidden" name="sale_id_hidden" id="sale_id_hidden" class="form-control">
                 </div>
                 <div class="col-sm-2">
                     <label for="" class="form-label">รหัสลูกค้า</label>
-                    <input type="text" name="" id="cust_id" class="form-control">
+                    <input type="text" name="" id="cust_id" class="form-control" list="cust_id_list">
+                        <datalist id="cust_id_list">
+                            <?php
+                                $sql = "SELECT * FROM customer";
+                                $result = $con->query($sql);
+                                while ($data = mysqli_fetch_array($result)) {
+                                    echo "<option value='" . $data['Cust_id'] . "'>";
+                                }
+                            ?>
+                        </datalist>
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
@@ -108,7 +120,16 @@ if (isset($_POST['cancelSale'])) {
             <div class="row d-flex align-items-end">
                 <div class="col-sm-2">
                     <label for="" class="form-label">รหัสสินค้า</label>
-                    <input type="text" name="" id="pro_id" class="form-control">
+                    <input type="text" name="" id="pro_id" class="form-control" list="pro_id_list">
+                        <datalist id="pro_id_list">
+                            <?php
+                                $sql = "SELECT * FROM product";
+                                $result = $con->query($sql);
+                                while ($data = mysqli_fetch_array($result)) {
+                                    echo "<option value='" . $data['Pro_id'] . "'>";
+                                }
+                            ?>
+                        </datalist>
                 </div>
                 <div class="col-sm">
                     <label for="" class="form-label">ชื่อสินค้า</label>
