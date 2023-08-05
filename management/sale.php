@@ -8,9 +8,9 @@ $row_lastestSaleId = mysqli_fetch_array($result_latestSaleId);
 $latest_saleId = $row_lastestSaleId['sale_id'];
 if ($latest_saleId == null) {
     $latest_saleId = 'ไม่มีรหัสการขายก่อนหน้า';
-} else {
-    $new_sale_id = preg_replace('/\D/', '', $latest_saleId) + 1;
-    $latest_saleId_AutoGenerate = "SA" . $new_sale_id;    //Auto generated Sale ID
+}
+else {
+    $latest_saleId_AutoGenerate = "SA" . preg_replace('/\D/', '', $latest_saleId) + 1;    //Auto generated Sale ID
 }
 
 if (isset($_POST['confirmSale'])) {
@@ -203,6 +203,11 @@ if (isset($_POST['cancelSale'])) {
         </form>
     </div>
 
+    <script>
+        // document.getElementById('sale_date').valueAsDate = new Date();
+    </script>
+
+    <!-- Search Customer by ID and return FullName -->
     <script src="js/search_customer.js"></script>
     <script src="js/search_product.js"></script>
     <script src="js/calPricePerAmount.js"></script>
