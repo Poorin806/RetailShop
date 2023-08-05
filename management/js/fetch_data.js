@@ -45,7 +45,7 @@ function fetchDataAndRefreshTable(sale_id) {
 
                 var newRow = document.createElement("tr");
                 newRow.innerHTML = `
-                    <td>${item.Sale_id}</td>
+                    <td>${item.pro_id}</td>
                     <td>${item.pro_name}</td>
                     <td>${item.Amount}</td>
                     <td>${item.Sale_price}</td>

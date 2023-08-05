@@ -2,13 +2,13 @@
 <table class="table table-bordered table-striped text-center">
     <thead>
         <tr>
-            <th>รหัสสินค้า</th>
-            <th>ชื่อสินค้า</th>
-            <th>จำนวน</th>
-            <th>ราคาต่อหน่วย</th>
-            <th>ลดราคา</th>
-            <th>ราคารวม</th>
-            <th style="width:10%;">จัดการ</th>
+            <th class="text-primary">รหัสสินค้า</th>
+            <th  class="text-primary">ชื่อสินค้า</th>
+            <th  class="text-primary">จำนวน</th>
+            <th  class="text-primary">ราคาต่อหน่วย</th>
+            <th  class="text-primary">ลดราคา</th>
+            <th  class="text-primary">ราคารวม</th>
+            <th  class="text-primary" style="width:10%;">จัดการ</th>
         </tr>
     </thead>
     <tbody>

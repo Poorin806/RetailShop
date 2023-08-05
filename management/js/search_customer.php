@@ -12,7 +12,7 @@ if (isset($_POST["cust_id"])) {
         $fullName = $row["full_name"];
         echo $fullName;
     } else {
-        echo "ไม่พบลูกค้า";
+        echo false;
     }
 }
 ?>

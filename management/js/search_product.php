@@ -24,6 +24,6 @@ if (isset($_POST["pro_id"])) {
         // Return the JSON response
         echo $jsonResponse;
     } else {
-        echo "ไม่พบสินค้า";
+        echo false;
     }
 }

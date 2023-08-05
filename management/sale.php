@@ -10,7 +10,8 @@ if ($latest_saleId == null) {
     $latest_saleId = 'ไม่มีรหัสการขายก่อนหน้า';
 }
 else {
-    $latest_saleId_AutoGenerate = "SA" . preg_replace('/\D/', '', $latest_saleId) + 1;    //Auto generated Sale ID
+    $new_sale_id = preg_replace('/\D/', '', $latest_saleId) + 1;
+    $latest_saleId_AutoGenerate = "SA" . $new_sale_id;    //Auto generated Sale ID
 }
 
 if (isset($_POST['confirmSale'])) {
@@ -42,7 +43,8 @@ if (isset($_POST['cancelSale'])) {
     $result2 = $con->query($sql_2);
 
     if ($result1 && $result2) {
-        echo "<script>alert('ยกเลิกรายการสำเร็จ')</script>";
+        // echo "<script>alert('ยกเลิกรายการสำเร็จ')</script>";
+        // When refresh, will delete sale, sale_detail automatically
         echo "<script>window.location.href = window.location.href;</script>";
     } else {
         echo "<script>alert('ยกเลิกรายการไม่สำเร็จ')</script>";
@@ -195,16 +197,12 @@ if (isset($_POST['cancelSale'])) {
                     <input type="submit" id="btnConfirmSale" name="confirmSale" value="ยืนยันการขาย" class="btn btn-primary w-100" disabled>
                 </div>
                 <div class="col-sm-3">
-                    <input type="submit" id="btnCancelSale" name="cancelSale" value="ยกเลิก" onclick="return confirm('ต้องการยกเลิกรายการขายนี้หรือไม่?')" class="btn btn-outline-danger w-100" disabled>
+                    <input type="submit" id="btnCancelSale" name="cancelSale" value="ยกเลิก" onclick="return confirm('ต้องการยกเลิกรายการขายนี้หรือไม่?')" class="btn btn-danger w-100" disabled>
                 </div>
             </div>
         </form>
     </div>
-
-    <script>
-        // document.getElementById('sale_date').valueAsDate = new Date();
-    </script>
-
+    
     <!-- Search Customer by ID and return FullName -->
     <script src="js/search_customer.js"></script>
     <script src="js/search_product.js"></script>

@@ -9,8 +9,13 @@ function searchCustomer() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             // Handle the response
-            var resultInput = document.getElementById("cust_name");
-            resultInput.value = xhr.responseText; // Set the value of the input tag
+            var cust_name = document.getElementById("cust_name");
+            if(xhr.responseText==false){
+                cust_name.value='ไม่พบลูกค้า';
+                document.getElementById('cust_id').focus();
+            }else{
+                cust_name.value = xhr.responseText; // Set the value of the input tag
+            }
         }
     };
 

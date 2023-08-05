@@ -26,6 +26,7 @@ function createSaleId(){
                 document.getElementById("sale_id").disabled = true;
                 document.getElementById("cust_id").disabled = true;
                 document.getElementById("pro_id").focus();
+                document.getElementById("btnCancelSale").disabled = false;
             }else{
                 console.log("สร้างรายการขายไม่สำเร็จ");
                 alert('สร้างรายการขายไม่สำเร็จ')
