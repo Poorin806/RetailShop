@@ -8,8 +8,7 @@ $row_lastestSaleId = mysqli_fetch_array($result_latestSaleId);
 $latest_saleId = $row_lastestSaleId['sale_id'];
 if ($latest_saleId == null) {
     $latest_saleId = 'ไม่มีรหัสการขายก่อนหน้า';
-}
-else {
+} else {
     $new_sale_id = preg_replace('/\D/', '', $latest_saleId) + 1;
     $latest_saleId_AutoGenerate = "SA" . $new_sale_id;    //Auto generated Sale ID
 }
@@ -96,15 +95,15 @@ if (isset($_POST['cancelSale'])) {
                 <div class="col-sm-2">
                     <label for="" class="form-label">รหัสลูกค้า</label>
                     <input type="text" name="" id="cust_id" class="form-control" list="cust_id_list">
-                        <datalist id="cust_id_list">
-                            <?php
-                                $sql = "SELECT * FROM customer";
-                                $result = $con->query($sql);
-                                while ($data = mysqli_fetch_array($result)) {
-                                    echo "<option value='" . $data['Cust_id'] . "'>";
-                                }
-                            ?>
-                        </datalist>
+                    <datalist id="cust_id_list">
+                        <?php
+                        $sql = "SELECT * FROM customer";
+                        $result = $con->query($sql);
+                        while ($data = mysqli_fetch_array($result)) {
+                            echo "<option value='" . $data['Cust_id'] . "'>";
+                        }
+                        ?>
+                    </datalist>
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
@@ -123,15 +122,15 @@ if (isset($_POST['cancelSale'])) {
                 <div class="col-sm-2">
                     <label for="" class="form-label">รหัสสินค้า</label>
                     <input type="text" name="" id="pro_id" class="form-control" list="pro_id_list">
-                        <datalist id="pro_id_list">
-                            <?php
-                                $sql = "SELECT * FROM product";
-                                $result = $con->query($sql);
-                                while ($data = mysqli_fetch_array($result)) {
-                                    echo "<option value='" . $data['Pro_id'] . "'>";
-                                }
-                            ?>
-                        </datalist>
+                    <datalist id="pro_id_list">
+                        <?php
+                        $sql = "SELECT * FROM product";
+                        $result = $con->query($sql);
+                        while ($data = mysqli_fetch_array($result)) {
+                            echo "<option value='" . $data['Pro_id'] . "'>";
+                        }
+                        ?>
+                    </datalist>
                 </div>
                 <div class="col-sm">
                     <label for="" class="form-label">ชื่อสินค้า</label>
@@ -194,7 +193,8 @@ if (isset($_POST['cancelSale'])) {
             </div>
             <div class="row mb-3">
                 <div class="col-sm-3">
-                    <input type="submit" id="btnConfirmSale" name="confirmSale" value="ยืนยันการขาย" class="btn btn-primary w-100" disabled>
+                    <!-- <input type="submit" id="btnConfirmSale" name="confirmSale" value="ยืนยันการขาย" class="btn btn-primary w-100" disabled> -->
+                    <button type="button" id="btnConfirmSale" onclick="" class="btn btn-primary w-100" disabled>ยืนยันการขาย</button>
                 </div>
                 <div class="col-sm-3">
                     <input type="submit" id="btnCancelSale" name="cancelSale" value="ยกเลิก" onclick="return confirm('ต้องการยกเลิกรายการขายนี้หรือไม่?')" class="btn btn-danger w-100" disabled>
@@ -202,8 +202,7 @@ if (isset($_POST['cancelSale'])) {
             </div>
         </form>
     </div>
-    
-    <!-- Search Customer by ID and return FullName -->
+
     <script src="js/search_customer.js"></script>
     <script src="js/search_product.js"></script>
     <script src="js/calPricePerAmount.js"></script>
@@ -213,8 +212,9 @@ if (isset($_POST['cancelSale'])) {
     <script src="js/fetch_data.js"></script>
     <script src="js/calChange.js"></script>
     <script src="js/delete_sale.js"></script>
+    <script src="js/confirm_sale.js"></script>
     <?php include_once "../import/js.php"; ?>
-    
+
 </body>
 
 </html>
