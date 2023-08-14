@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+<nav class="navbar navbar-expand-lg bg-primary w-100" data-bs-theme="dark" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; position: fixed; z-index:999; top:0;">
         <div class="container align-items-center">
             <a class="navbar-brand fw-bold" href="/RetailShop/">Retail Shop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav-item" aria-controls="main-nav-item" aria-expanded="false" aria-label="Toggle navigation">

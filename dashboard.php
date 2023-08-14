@@ -1,7 +1,7 @@
 <?php
 
     // Connection
-    include_once('import/connect.php');
+    include_once('../import/connect.php');
 
 ?>
 
@@ -14,12 +14,12 @@
   <link rel="stylesheet" href="/RetailShop/dashboard.css">
   <title>Retailshop Dashboard</title>
   <!-- Essentials Css Icons -->
-  <?php include_once "import/css.php"; ?>
+  <?php include_once "../import/css.php"; ?>
   
 </head>
 <body>
   <!-- Navbar -->
-  <?php include_once "import/navbar.php" ?>
+  <?php include_once "../import/navbar.php" ?>
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -204,6 +204,6 @@
     </div>
 
     <script src="index.js"></script>
-  <?php include_once "import/js.php"; ?>
+  <?php include_once "../import/js.php"; ?>
 </body>
 </html>
