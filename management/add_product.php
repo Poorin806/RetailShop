@@ -61,7 +61,7 @@
                 $sql = "SELECT * FROM product ORDER BY Pro_id DESC LIMIT 1";
                 $result = $con->query($sql);
                 $NewID = mysqli_fetch_array($result);
-                $NewID = "PRO" . preg_replace('/\D/', '', $NewID['Sup_id']) + 1;
+                $NewID = "PRO" . preg_replace('/\D/', '', $NewID['Pro_id']) + 1;
             ?>
             <div class="row">
                 <div class="col-sm-6 mb-3">
@@ -99,7 +99,7 @@
                             $result = $con->query($sql);
                             while ($temp_data = mysqli_fetch_array($result)) {
                                 ?>
-                                <option value="<?php echo $temp_data['Cate_id']; ?>"><?php echo $temp_data['Cate_id']; ?></option>
+                                <option value="<?php echo $temp_data['Cate_id']; ?>"><?php echo $temp_data['Cate_name']; ?></option>
                                 <?php
                             }
                         ?>
