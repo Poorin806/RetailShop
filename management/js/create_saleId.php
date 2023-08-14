@@ -15,6 +15,7 @@ if (isset($_POST["sale_id"], $_POST["cust_id"], $_POST["sale_date"])) {
 
     if($result){
         echo "true";
+        echo "<script>console.log('เริ่มการขาย, $sale_id');</script>";
     }else{
         echo "false";
     }
