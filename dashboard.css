@@ -151,7 +151,7 @@ body{
 }
 
 .sidebar .side-menu li.active a{
-    color: var(--success);
+    color: var(--primary);
 }
 
 .sidebar.close .side-menu li a{
@@ -465,7 +465,7 @@ body{
 
 .content main .bottom-data .orders table th{
     padding-bottom: 12px;
-    font-size: 13px;
+    font-size: 16px;
     text-align: left;
     border-bottom: 1px solid var(--grey);
 }

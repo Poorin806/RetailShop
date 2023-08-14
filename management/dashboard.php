@@ -37,7 +37,7 @@
     <!-- Main Content -->
     <div class="content">
         <main>
-            <div class="header">
+            <div class="header mt-5">
                 <div class="left">
                     <h1>ผลรวมทั้งหมด</h1>
                 </div>
@@ -49,7 +49,12 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            0000
+                            <?php 
+                                $query = "SELECT * FROM product";
+                                $result = mysqli_query($con, $query);
+                                $num_rows = mysqli_num_rows($result);
+                                echo $num_rows;
+                            ?>
                         </h3>
                         <p>สินค้าทั้งหมด</p>
                     </span>
@@ -57,7 +62,12 @@
                 <li><i class='bx bx-cart-add' ></i>
                     <span class="info">
                         <h3>
-                          0000
+                            <?php 
+                                $query = "SELECT * FROM sale";
+                                $result = mysqli_query($con, $query);
+                                $num_rows = mysqli_num_rows($result);
+                                echo $num_rows;
+                            ?>
                         </h3>
                         <p>ยอดการขาย</p>
                     </span>
@@ -65,7 +75,12 @@
                 <li><i class='bx bx-line-chart'></i>
                     <span class="info">
                         <h3>
-                          0000
+                            <?php 
+                                $query = "SELECT * FROM buy";
+                                $result = mysqli_query($con, $query);
+                                $num_rows = mysqli_num_rows($result);
+                                echo $num_rows;
+                            ?>
                         </h3>
                         <p>ยอดการสั่งซื้อ</p>
                     </span>
@@ -73,7 +88,13 @@
                 <li><i class='bx bx-dollar-circle'></i>
                     <span class="info">
                         <h3>
-                          0000
+                          <?php
+                            $query = "SELECT SUM(Net_price) - SUM(Net_discount) AS Total FROM sale";
+                            $result = mysqli_query($con, $query);
+                            $row = mysqli_fetch_assoc($result);
+                            $total = $row['Total'];
+                            echo number_format($total, 2);
+                          ?>
                         </h3>
                         <p>รายได้เข้าร้านทั้งหมด</p>
                     </span>
@@ -92,43 +113,55 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="font-size: 16px;">พนักงาน</th>
-                                <th style="font-size: 16px;">วันที่รับสินค้า</th>
-                                <th style="font-size: 16px;">สถานะการสั่งซื้อ</th>
-                                <th style="font-size: 16px;">เพิ่มเติม</th>
+                                <th style="font-size: 17px;">พนักงาน</th>
+                                <th style="font-size: 17px;">วันที่รับสินค้า</th>
+                                <th style="font-size: 17px;">สถานะการสั่งซื้อ</th>
+                                <th style="font-size: 17px;">เพิ่มเติม</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <p>ณัฏฐากร</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td ><span class="status completed" style="font-size: 14px;">รับสินค้าแล้ว</span></td>
-                                <td>
-                                  <button type="button" class="btn btn-primary">รายละเอียด</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>พัลลภ</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status notComplete" style="font-size: 14px;">สินค้าไม่ครบ</span></td>
-                                <td>
-                                  <button type="button" class="btn btn-primary">รายละเอียด</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>ภูรินทร์</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status cancle" style="font-size: 14px;">ยกเลิกการซื้อ</span></td>
-                                <td>
-                                  <button type="button" class="btn btn-primary">รายละเอียด</button>
-                                </td>
-                            </tr>
+                            <?php
+                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id Limit 6";
+                                $result = $con->query($sql);
+                                while ($data = mysqli_fetch_array($result)) {
+                                    ?>
+                                    <tr>
+                                        <th><?php echo $data['Emp_name'] ?></th>
+                                        <td><?php echo formatDateThai($data['Receive_date'])?></td>
+                                        <td >
+                                            <span class="
+                                            <?php
+                                                    if ($data['Buy_status'] == 1){
+                                                        echo 'status cancle';   
+                                                    }
+                                                    elseif($data['Buy_status'] == 2){
+                                                        echo 'status notComplete';
+                                                    }
+                                                    else{
+                                                        echo 'status completed';
+                                                    }
+                                                ?>
+                                            " style="font-size: 14px;">
+                                                <?php
+                                                    if ($data['Buy_status'] == 1){
+                                                        echo 'ยกเลิกสินค้า';
+                                                    }
+                                                    elseif($data['Buy_status'] == 2){
+                                                        echo 'สินค้าไม่ครบ';
+                                                    }
+                                                    else{
+                                                        echo 'รับสินค้าครบ';
+                                                    }
+                                                ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                        <button type="button" class="btn btn-primary">รายละเอียด</button>
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -142,30 +175,26 @@
                         <i class='bx bx-plus'></i>
                     </div>
                     <ul class="task-list">
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p style="font-size: 18px;">ใบเสร็จที่ 1: AK-47 จำนวน 2 กระบอก</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p style="font-size: 18px;">ใบเสร็จที่ 1: AK-47 จำนวน 2 กระบอก</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p style="font-size: 18px;">ใบเสร็จที่ 1: AK-47 จำนวน 2 กระบอก</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
+                                <?php
+                                    $sql = "SELECT Product_Return.*, Product.Pro_name FROM Product_Return INNER JOIN Product ON Product_Return.pro_id = Product.Pro_id Limit 6";
+                                    $result = $con->query($sql);
+                                    while ($data = mysqli_fetch_array($result)) {
+                                    ?>
+                                        <li class="completed">
+                                            <div class="task-title">
+                                                <p class="m-0 p-0" style="font-size: 18px;">
+                                                    ใบเสร็จ <?php echo $data['Sale_id']?>: คืน <!--รหัสใบเสร็จที่ที่คืนสินค้า -->
+                                                    <?php echo $data['Pro_name']?> จำนวน <?php echo $data['Amount']?> กระบอก
+                                                </p>
+                                            
+                                            </div>
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </li>
+                                    <?php   
+                                    }
+                                ?>
                     </ul>
                 </div>
-
                 <!-- End of Reminders-->
 
             </div>
