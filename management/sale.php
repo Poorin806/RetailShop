@@ -10,7 +10,8 @@ if ($latest_saleId == null) {
     $latest_saleId = 'ไม่มีรหัสการขายก่อนหน้า';
 }
 else {
-    $latest_saleId_AutoGenerate = "SA" . preg_replace('/\D/', '', $latest_saleId) + 1;    //Auto generated Sale ID
+    $new_sale_id = preg_replace('/\D/', '', $latest_saleId) + 1;
+    $latest_saleId_AutoGenerate = "SA" . $new_sale_id; 
 }
 
 if (isset($_POST['confirmSale'])) {
