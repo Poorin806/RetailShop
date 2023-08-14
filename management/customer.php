@@ -142,7 +142,7 @@
                 for (const row of data) {
                     html += `<tr>
                                 <th>${row.Cust_id}</th>
-                                <td>${row.Cust_name}</td>
+                                <td>${row.Cust_name} ${row.Cust_lastName}</td>
                                 <td>${row.Cust_address}</td>
                                 <td>${row.Province_name}</td>
                                 <td>${row.Cust_tel}</td>
