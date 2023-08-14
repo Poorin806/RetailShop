@@ -23,8 +23,8 @@ document.getElementById('btnConfirmSale').addEventListener("click", function () 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             if (xhr.responseText) {
-                alert('ไปยังหน้าพิมพ์ใบเสร็จ');
-                window.location.href = window.location.href;
+                // alert('ไปยังหน้าพิมพ์ใบเสร็จ');
+                window.location.href='receipt.php?sale_id='+sale_id;
             } else {
                 alert('ยืนยันการขายไม่สำเร็จ');
             }
