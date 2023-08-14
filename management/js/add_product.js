@@ -5,27 +5,33 @@ function addProduct() {
     var pro_saleprice = document.getElementById("pro_saleprice").value;
     var discount = document.getElementById("discount").value;
 
-    if (pro_id !== null && pro_amount !== null || pro_amount !== 0) {
-        // Send AJAX request to the PHP file
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "js/add_product.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                if (xhr.responseText == 'true') {
-                    console.log("success");
-                    clearProductData();
-                    fetchDataAndRefreshTable(sale_id);
-                } else {
-                    console.log("fail");
+    if (pro_amount==0){
+        alert('โปรดกรอกจำนวนสินค้า');
+        document.getElementById('pro_amount').focus();
+    }else{
+        if (pro_id !== null && pro_amount !== 0) {
+            // Send AJAX request to the PHP file
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "js/add_product.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    if (xhr.responseText == 'true') {
+                        console.log("add product success");
+                        clearProductData();
+                        fetchDataAndRefreshTable(sale_id);
+                    } else {
+                        console.log("add product fail");
+                    }
                 }
-            }
-        };
-
-        // Prepare data and send the request
-        var data = "sale_id=" + encodeURIComponent(sale_id) + "&pro_id=" + encodeURIComponent(pro_id) + "&pro_amount=" + encodeURIComponent(pro_amount) + "&pro_amount=" + encodeURIComponent(pro_amount) + "&pro_saleprice=" + encodeURIComponent(pro_saleprice) + "&discount=" + encodeURIComponent(discount);
-        xhr.send(data);
+            };
+    
+            // Prepare data and send the request
+            var data = "sale_id=" + encodeURIComponent(sale_id) + "&pro_id=" + encodeURIComponent(pro_id) + "&pro_amount=" + encodeURIComponent(pro_amount) + "&pro_amount=" + encodeURIComponent(pro_amount) + "&pro_saleprice=" + encodeURIComponent(pro_saleprice) + "&discount=" + encodeURIComponent(discount);
+            xhr.send(data);
+        }
     }
+
 }
 
 function clearProductData() {

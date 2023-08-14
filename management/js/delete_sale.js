@@ -1,4 +1,3 @@
-
 window.addEventListener("beforeunload", function (event) {
     var sale_id = document.getElementById("sale_id").value;
     var xhr = new XMLHttpRequest();
@@ -6,10 +5,13 @@ window.addEventListener("beforeunload", function (event) {
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            if (xhr.responseText == true) {
+            console.log(xhr.responseText);
+            if (xhr.responseText == 'delete_success') {
                 alert('ยกเลิกรายการสำเร็จ');
+            } else if (xhr.responseText == 'sale_done'){
+                alert('รายการขายนี้สำเร็จแล้ว');
             } else {
-                alert('ยกเลิกรายการไม่สำเร็จ');
+                alert('ยกเลิกรายการไม่สำเร็จ หรือยังไม่ได้เริ่มการขาย');
             }
         }
     };
