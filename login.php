@@ -40,7 +40,10 @@
             $data = $query->fetch_array();
 
             if ($LoginResult != 0) {
-                $_SESSION['UserID'] = $data['Emp_id'];
+                $_SESSION['Emp_id'] = $data['Emp_id'];
+                $_SESSION['Emp_name'] = $data['Emp_name'];
+                $_SESSION['Emp_status'] = $data['Emp_status'];
+                $_SESSION['Emp_type'] = $data['Emp_type'];
                 echo "<script>
                     Swal.fire({
                         icon: 'success',

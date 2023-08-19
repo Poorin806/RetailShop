@@ -24,7 +24,7 @@
 
     // Check Login
     $CurrentPage = basename($_SERVER['PHP_SELF']);
-    if ((!isset($_SESSION['UserID']))) {
+    if ((!isset($_SESSION['Emp_id']))) {
         if ($CurrentPage != "login.php") {
             echo "<script>window.location = '$rootDirectory" . "login.php'</script>";
         }

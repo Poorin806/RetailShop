@@ -43,7 +43,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        นายภูรินทร์ ทัศคร
+                        <?php echo $_SESSION['Emp_name'] ?>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item text-light" href="#" onclick="Logout()">ออกจากระบบ</a></li>
