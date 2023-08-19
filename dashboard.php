@@ -26,7 +26,7 @@
         <ul class="side-menu">
             <li class="active"><a href="#" class="text-decoration-none"><i class='bx bxs-dashboard'></i>ผลรวมทั้งหมด</a></li>
             <li><a href="#" class="text-decoration-none"><i class='bx bx-store-alt'></i>ผลรวม</a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-analyse'></i>ผลรวม  </a></li>
+            <li><a href="#" class="text-decoration-none"><i class='bx bx-analyse'></i>จัดการสินค้า  </a></li>
             <li><a href="#" class="text-decoration-none"><i class='bx bx-message-square-dots'></i>ผลรวม</a></li>
             <li><a href="#" class="text-decoration-none"><i class='bx bx-group'></i>ผลรวม</a></li>
             <li><a href="#" class="text-decoration-none"><i class='bx bx-cog'></i>ผลรวม</a></li>
@@ -72,7 +72,7 @@
                         <p>ยอดการขาย</p>
                     </span>
                 </li>
-                <li><i class='bx bx-line-chart'></i>
+                <li><i class='bx bx-home-alt'></i>
                     <span class="info">
                         <h3>
                             <?php 
@@ -82,7 +82,7 @@
                                 echo $num_rows;
                             ?>
                         </h3>
-                        <p>ยอดการสั่งซื้อ</p>
+                        <p>ร้านค้าปลีกทั้งหมด</p>
                     </span>
                 </li>
                 <li><i class='bx bx-dollar-circle'></i>

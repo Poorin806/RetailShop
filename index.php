@@ -25,11 +25,13 @@
   <div class="sidebar">
         <ul class="side-menu">
             <li class="active"><a href="#" class="text-decoration-none"><i class='bx bxs-dashboard'></i>ผลรวมทั้งหมด</a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-store-alt'></i>ผลรวม</a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-analyse'></i>ผลรวม  </a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-message-square-dots'></i>ผลรวม</a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-group'></i>ผลรวม</a></li>
-            <li><a href="#" class="text-decoration-none"><i class='bx bx-cog'></i>ผลรวม</a></li>
+            <li><a href="/RetailShop/management/product.php" class="text-decoration-none"><i class='bx bx-store-alt'></i>ข้อมูลสินค้า</a></li>
+            <li><a href="/RetailShop/management/employee.php" class="text-decoration-none"><i class='bx bx-group'></i>ข้อมูลพนักงาน</a></li>
+            <li><a href="/RetailShop/management/supplier.php" class="text-decoration-none"><i class='bx bx-home-alt'></i>ข้อมูลตัวแทนจำหน่าย</a></li>
+            <li><a href="/RetailShop/management/customer.php" class="text-decoration-none"><i class='bx bx-analyse'></i>ข้อมูลลูกค้า</a></li>
+            <li><a href="/RetailShop/management/product_category.php" class="text-decoration-none"><i class='bx bx-category-alt' ></i>ข้อมูลประเภทสินค้า</a></li>
+            <li><a href="/RetailShop/management/shelf.php" class="text-decoration-none"><i class='bx bx-spreadsheet'></i>ข้อมูลชั้นวางสินค้า</a></li>
+            <li><a href="/RetailShop/management/province.php" class="text-decoration-none"><i class='bx bxl-product-hunt' ></i>ข้อมูลจังหวัด</a></li>
         </ul>
     </div>
     <!-- End of Sidebar -->
@@ -45,60 +47,67 @@
 
             <!-- Insights -->
             <ul class="insights">
-                <li>
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="info">
-                        <h3>
-                            <?php 
-                                $query = "SELECT * FROM product";
+                <a class="text-decoration-none" href="/RetailShop/management/employee.php">
+                    <li><i class='bx bxs-user'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT * FROM employee";
+                                    $result = mysqli_query($con, $query);
+                                    $num_rows = mysqli_num_rows($result);
+                                    echo $num_rows;
+                                ?>
+                            </h3>
+                            <p>พนักงานทั้งหมด</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none" href="/RetailShop/management/product.php">
+                    <li><i class='bx bx-calendar-check'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT * FROM product";
+                                    $result = mysqli_query($con, $query);
+                                    $num_rows = mysqli_num_rows($result);
+                                    echo $num_rows;
+                                ?>
+                            </h3>
+                            <p>รายการสินค้าทั้งหมด</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none" href="/RetailShop/management/supplier.php">
+                    <li><i class='bx bx-home-alt'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT * FROM product_return";
+                                    $result = mysqli_query($con, $query);
+                                    $num_rows = mysqli_num_rows($result);
+                                    echo $num_rows;
+                                ?>
+                            </h3>
+                            <p>ยอดคืนสินค้าทั้งหมด</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none">
+                    <li><i class='bx bx-dollar-circle'></i>
+                        <span class="info">
+                            <h3>
+                            <?php
+                                $query = "SELECT SUM(Net_price) - SUM(Net_discount) AS Total FROM sale";
                                 $result = mysqli_query($con, $query);
-                                $num_rows = mysqli_num_rows($result);
-                                echo $num_rows;
+                                $row = mysqli_fetch_assoc($result);
+                                $total = $row['Total'];
+                                echo number_format($total, 2);
                             ?>
-                        </h3>
-                        <p>สินค้าทั้งหมด</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-cart-add' ></i>
-                    <span class="info">
-                        <h3>
-                            <?php 
-                                $query = "SELECT * FROM sale";
-                                $result = mysqli_query($con, $query);
-                                $num_rows = mysqli_num_rows($result);
-                                echo $num_rows;
-                            ?>
-                        </h3>
-                        <p>ยอดการขาย</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-line-chart'></i>
-                    <span class="info">
-                        <h3>
-                            <?php 
-                                $query = "SELECT * FROM buy";
-                                $result = mysqli_query($con, $query);
-                                $num_rows = mysqli_num_rows($result);
-                                echo $num_rows;
-                            ?>
-                        </h3>
-                        <p>ยอดการสั่งซื้อ</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-dollar-circle'></i>
-                    <span class="info">
-                        <h3>
-                          <?php
-                            $query = "SELECT SUM(Net_price) - SUM(Net_discount) AS Total FROM sale";
-                            $result = mysqli_query($con, $query);
-                            $row = mysqli_fetch_assoc($result);
-                            $total = $row['Total'];
-                            echo number_format($total, 2);
-                          ?>
-                        </h3>
-                        <p>รายได้เข้าร้านทั้งหมด</p>
-                    </span>
-                </li>
+                            </h3>
+                            <p>รายได้เข้าร้านทั้งหมด</p>
+                        </span>
+                    </li>
+                </a>
             </ul>
             <!-- End of Insights -->
 
@@ -106,7 +115,7 @@
                 <div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>รายการสั่งซื้อล่าสุด</h3>
+                        <h3>รายการซื้อสินค้าเข้าร้าน</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
@@ -170,7 +179,7 @@
                 <div class="reminders">
                     <div class="header">
                         <i class='bx bx-note'></i>
-                        <h3>คืนสินค้า</h3>
+                        <h3>ใบเสร็จคืนสินค้า</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-plus'></i>
                     </div>

@@ -55,8 +55,25 @@
                                 <tr>
                                     <th><?php echo $data['Emp_id'] ?></th>
                                     <td><?php echo $data['Emp_name'] ?></td>
-                                    <td><?php echo $data['Emp_status'] ?></td>
-                                    <td><?php echo $data['Emp_type'] ?></td>
+                                    <td>
+                                        <?php 
+                                            if($data['Emp_status'] == 1)
+                                                echo 'เข้าระบบได้';
+                                            else{
+                                                echo 'ไม่อนุญาตให้เข้าระบบ';
+                                            }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php 
+                                            if ($data['Emp_type'] == 1){
+                                                echo 'พนักงาน';
+                                            }
+                                            else{
+                                                echo 'เจ้าของกิจการ';
+                                            }
+                                        ?>
+                                    </td>
                                     <td class="text-end">
                                         <a href="edit_employee.php?ID=<?php echo $data['Emp_id'] ?>" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
                                         <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm('<?php echo $data['Emp_id'] ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
@@ -141,8 +158,8 @@
                     html += `<tr>
                                 <th>${row.Emp_id}</th>
                                 <td>${row.Emp_name}</td>
-                                <td>${row.Emp_status}</td>
-                                <td>${row.Emp_type}</td>
+                                <td>${row.Emp_status == 1 ? 'เข้าสู่ระบบได้' : 'ไม่อนุญาตให้เข้าระบบ'}</td>
+                                <td>${row.Emp_type == 1 ? 'พนักงาน' : 'เจ้าของกิจการ'}</td>
                                 <td class="text-end">
                                     <a href="edit_employee.php?ID=${row.Emp_id}" class="text-decoration-none fs-3 me-2"><i class="bi bi-pencil-square text-warning"></i></a>
                                     <a href="#" class="text-decoration-none fs-3" onclick="deleteConfirm('${row.Emp_id}')"><i class="bi bi-trash-fill text-danger"></i></a>
