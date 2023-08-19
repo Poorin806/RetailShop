@@ -9,7 +9,7 @@
     "
 >
     <div class="container align-items-center">
-        <a class="navbar-brand fw-bold" href="/RetailShop/">Retail Shop <?php echo $CurrentPage ?></a>
+        <a class="navbar-brand fw-bold" href="/RetailShop/">Retail Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav-item" aria-controls="main-nav-item" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
