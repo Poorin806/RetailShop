@@ -28,7 +28,7 @@ if (isset($_POST['confirmSale'])) {
             ";
     $result = $con->query($sql);
     if ($result) {
-        echo "<script>alert('ไปยังหน้าพิมพ์ใบเสร็จ')</script>";
+        echo "<script>window.location.href='receipt.php?sale_id='".$sale_id."'</script>";
     } else {
         echo "<script>alert('ยืนยันการขายไม่สำเร็จ'" . $sql . "')</script>";
     }
