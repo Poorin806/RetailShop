@@ -39,6 +39,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item text-light" href="/RetailShop/management/sale.php">ขายสินค้า</a></li>
                         <li><a class="dropdown-item text-light" href="/RetailShop/management/return.php">คืนสินค้า</a></li>
+                        <li><a class="dropdown-item text-light" href="/RetailShop/management/buy.php">ซื้อสินค้าเข้า</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
