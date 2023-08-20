@@ -124,48 +124,45 @@
                             <tr>
                                 <th style="font-size: 17px;">พนักงาน</th>
                                 <th style="font-size: 17px;">วันที่รับสินค้า</th>
+                                <th style="font-size: 17px;">ราคาสุทธิ</th>
                                 <th style="font-size: 17px;">สถานะการสั่งซื้อ</th>
-                                <th style="font-size: 17px;">เพิ่มเติม</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id Limit 6";
+                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id Limit 8";
                                 $result = $con->query($sql);
                                 while ($data = mysqli_fetch_array($result)) {
                                     ?>
                                     <tr>
                                         <th><?php echo $data['Emp_name'] ?></th>
                                         <td><?php echo formatDateThai($data['Receive_date'])?></td>
-                                        <td >
-                                            <span class="
-                                            <?php
-                                                    if ($data['Buy_status'] == 1){
-                                                        echo 'status cancle';   
-                                                    }
-                                                    elseif($data['Buy_status'] == 2){
-                                                        echo 'status notComplete';
-                                                    }
-                                                    else{
-                                                        echo 'status completed';
-                                                    }
-                                                ?>
-                                            " style="font-size: 14px;">
-                                                <?php
-                                                    if ($data['Buy_status'] == 1){
-                                                        echo 'ยกเลิกสินค้า';
-                                                    }
-                                                    elseif($data['Buy_status'] == 2){
-                                                        echo 'สินค้าไม่ครบ';
-                                                    }
-                                                    else{
-                                                        echo 'รับสินค้าครบ';
-                                                    }
-                                                ?>
-                                            </span>
-                                        </td>
+                                        <td ><?php echo number_format($data['Net_price'], 2)?> บาท</td>
                                         <td>
-                                        <button type="button" class="btn btn-primary">รายละเอียด</button>
+                                            <span class="
+                                                <?php
+                                                        if ($data['Buy_status'] == 1){
+                                                            echo 'status cancle';   
+                                                        }
+                                                        elseif($data['Buy_status'] == 2){
+                                                            echo 'status notComplete';
+                                                        }
+                                                        else{
+                                                            echo 'status completed';
+                                                        }
+                                                    ?>" style="font-size: 14px;">
+                                                    <?php
+                                                        if ($data['Buy_status'] == 1){
+                                                            echo 'ยกเลิกสินค้า';
+                                                        }
+                                                        elseif($data['Buy_status'] == 2){
+                                                            echo 'สินค้าไม่ครบ';
+                                                        }
+                                                        else{
+                                                            echo 'รับสินค้าครบ';
+                                                        }
+                                                    ?>
+                                                </span>
                                         </td>
                                     </tr>
                                 <?php
