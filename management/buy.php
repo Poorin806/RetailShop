@@ -14,57 +14,6 @@ if ($latest_BuyId == null) {
     $buy_id = "B" . str_pad($new_buy_id, 4,'0',STR_PAD_LEFT);
 }
 
-
-if (isset($_POST['confirmBuy'])) {
-    // $buy_id = $_POST['buy_id'];
-    $est_id = 'EMP01';
-    // $sup_id = $_POST['sup_id'];
-    $net_price = $_POST['net_price'];
-
-    // Insert net_price into the 'buy' table
-    $insertBuyQuery = "INSERT INTO buy (buy_id, emp_id, buy_date, net_price) VALUES ('$buy_id', '$est_id', NOW(), '$net_price')";
-    $resultBuy = mysqli_query($con, $insertBuyQuery);
-
-    if ($resultBuy) {
-        // Get the last inserted ID (buy_id) for use in the buy_detail table
-        // $buy_id = mysqli_insert_id($con);
-
-        // Loop through the product quantities to insert into the 'buy_detail' table
-        foreach ($_POST['pro_amount'] as $pro_id => $amount) {
-            if($amount==0){
-                continue;
-            }
-            $sql_pro = "SELECT * FROM product WHERE pro_id = '$pro_id'";
-            if($result_pro=$con->query($sql_pro)){
-                $row_pro=mysqli_fetch_array($result_pro);
-                $total_price = $amount * $row_pro['Pro_salePrice']; // You need to fetch $unit_price from the database or calculate it
-            }
-
-            // Insert into 'buy_detail'
-            $insertDetailQuery = "INSERT INTO buy_detail (buy_id, pro_id, amount, price) VALUES ('$buy_id', '$pro_id', '$amount', '$total_price')";
-            $resultDetail = mysqli_query($con, $insertDetailQuery);
-            if (!$resultDetail) {
-                // Handle the case where insertion into buy_detail fails
-                echo "Error inserting into buy_detail: " . mysqli_error($con);
-            }
-
-            //Update product amount
-            $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
-            $result = mysqli_query($con, $sql_update);
-            if (!$result) {
-                // Handle the case where insertion into buy_detail fails
-                echo "Error update product amount: " . mysqli_error($con);
-            }
-        }
-
-        // Successfully inserted into both buy and buy_detail
-        echo "Purchase successfully completed!";
-    } else {
-        // Handle the case where insertion into buy fails
-        echo "Error inserting into buy: " . mysqli_error($con);
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,9 +25,75 @@ if (isset($_POST['confirmBuy'])) {
     <!-- Essentials Css Icons -->
     <?php include_once "../import/css.php"; ?>
 
+    <?php include_once "../import/js.php"; ?>
+
 </head>
 
 <body>
+
+
+    <?php
+
+        if (isset($_POST['confirmBuy'])) {
+            // $buy_id = $_POST['buy_id'];
+            $est_id = 'EMP01';
+            // $sup_id = $_POST['sup_id'];
+            $net_price = $_POST['net_price'];
+
+            // Insert net_price into the 'buy' table
+            $insertBuyQuery = "INSERT INTO buy (buy_id, emp_id, buy_date, net_price) VALUES ('$buy_id', '$est_id', NOW(), '$net_price')";
+            $resultBuy = mysqli_query($con, $insertBuyQuery);
+
+            if ($resultBuy) {
+                // Get the last inserted ID (buy_id) for use in the buy_detail table
+                // $buy_id = mysqli_insert_id($con);
+
+                // Loop through the product quantities to insert into the 'buy_detail' table
+                foreach ($_POST['pro_amount'] as $pro_id => $amount) {
+                    if($amount==0){
+                        continue;
+                    }
+                    $sql_pro = "SELECT * FROM product WHERE pro_id = '$pro_id'";
+                    if($result_pro=$con->query($sql_pro)){
+                        $row_pro=mysqli_fetch_array($result_pro);
+                        $total_price = $amount * $row_pro['Pro_salePrice']; // You need to fetch $unit_price from the database or calculate it
+                    }
+
+                    // Insert into 'buy_detail'
+                    $insertDetailQuery = "INSERT INTO buy_detail (buy_id, pro_id, amount, price) VALUES ('$buy_id', '$pro_id', '$amount', '$total_price')";
+                    $resultDetail = mysqli_query($con, $insertDetailQuery);
+                    if (!$resultDetail) {
+                        // Handle the case where insertion into buy_detail fails
+                        echo "Error inserting into buy_detail: " . mysqli_error($con);
+                    }
+
+                    //Update product amount
+                    $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
+                    $result = mysqli_query($con, $sql_update);
+                    if (!$result) {
+                        // Handle the case where insertion into buy_detail fails
+                        echo "Error update product amount: " . mysqli_error($con);
+                    }
+                }
+
+                // Successfully inserted into both buy and buy_detail
+                // echo "Purchase successfully completed!";
+                echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ซื้อสินค้าสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        });
+                    </script>
+                ";
+            } else {
+                // Handle the case where insertion into buy fails
+                echo "Error inserting into buy: " . mysqli_error($con);
+            }
+        }
+
+    ?>
+
     <!-- Navbar -->
     <?php include_once "../import/navbar.php" ?>
     <div class="container my-5 py-5">
@@ -194,7 +209,7 @@ if (isset($_POST['confirmBuy'])) {
                     echo "<script>
                             Swal.fire({
                                 icon: 'error',
-                                title: 'กรุณาค้นหา ร้าค้า',
+                                title: 'กรุณาค้นหา ร้านค้า',
                                 confirmButtonText: 'ตกลง'
                             })
                         </script>
@@ -205,7 +220,6 @@ if (isset($_POST['confirmBuy'])) {
 
     </div>
 
-    <?php include_once "../import/js.php"; ?>
     <script>
         // Get all elements with class "pro_amount"
         var quantityInputs = document.getElementsByClassName("pro_amount");
