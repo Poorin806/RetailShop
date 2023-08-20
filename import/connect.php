@@ -24,6 +24,7 @@
 
     // Check Login
     $CurrentPage = basename($_SERVER['PHP_SELF']);
+    // echo $CurrentPage;
     if ((!isset($_SESSION['Emp_id']))) {
         if ($CurrentPage != "login.php") {
             echo "<script>window.location = '$rootDirectory" . "login.php'</script>";
@@ -59,7 +60,7 @@
         $timestamp = strtotime($date);
 
         // สร้างรูปแบบวันที่ใหม่สำหรับแสดงผล (ใช้ d, M, Y และแทนที่เดือนแบบอังกฤษเป็นไทย)
-        $formatThai = 'd M Y (HⓂ️s น.)'; // รูปแบบวันที่แบบไทย (เช่น "25 ก.ค. 2566")
+        $formatThai = 'd M Y (H:m:s น.)'; // รูปแบบวันที่แบบไทย (เช่น "25 ก.ค. 2566")
 
         // ใช้ฟังก์ชัน date() เพื่อแปลง timestamp เป็นวันที่แบบไทย
         $formattedDate = date($formatThai, $timestamp);

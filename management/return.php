@@ -181,7 +181,7 @@
                         title: 'คืนสินค้าสำเร็จ',
                         confirmButtonText: 'ตกลง'
                     }).then((result) => {
-                        window.location.reload();
+                        window.location = "return_receipt.php?Sale_id=" + Sale_id;
                     });
                 }
             };

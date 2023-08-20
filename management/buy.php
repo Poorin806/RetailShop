@@ -95,7 +95,7 @@ if (isset($_POST['confirmBuy'])) {
             <div class="mb-3">
                 <label for="" class="form-label">เลือกตัวแทนจำหน่าย</label>
                 <select name="sup_id" id="" class="form-select">
-                    <option value="">--เลือก--</option>
+                    <option value="none">--เลือก--</option>
                     <?php
                     $sql = "SELECT * FROM supplier";
                     if ($result = $con->query($sql)) {
@@ -118,76 +118,89 @@ if (isset($_POST['confirmBuy'])) {
 
 
         <?php
-        if (isset($_POST['select_supplier'])) {
-            $sup_id = $_POST['sup_id'];
-            $sql_sup = "SELECT * FROM supplier WHERE sup_id = '$sup_id'";
-            if ($result_sup = $con->query($sql_sup)) {
-                $row_sup = mysqli_fetch_array($result_sup);
-            }
+            if (isset($_POST['select_supplier'])) {
+                $sup_id = $_POST['sup_id'];
+                if ($sup_id != 'none') {
+                    $sql_sup = "SELECT * FROM supplier WHERE sup_id = '$sup_id'";
+                    if ($result_sup = $con->query($sql_sup)) {
+                        $row_sup = mysqli_fetch_array($result_sup);
+                    }
+        
+                    $sql_pro = "SELECT * FROM product WHERE sup_id = '$sup_id'";
+                    $result_pro = $con->query($sql_pro);
 
-            $sql_pro = "SELECT * FROM product WHERE sup_id = '$sup_id'";
-            $result_pro = $con->query($sql_pro);
-        ?>
-            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                    ?>
+                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                        <div class="mb-3">
+                            <label for="" class="form-label">รหัสการซื้อ</label>
+                            <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
+                            <?php echo $buy_id ?>
+                        </div>
 
-                <div class="mb-3">
-                    <label for="" class="form-label">รหัสการซื้อ</label>
-                    <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
-                    <?php echo $buy_id ?>
-                </div>
+                        <h1 class="text-primary"><?php echo $row_sup['Sup_name'] ?></h1>
 
-                <h1 class="text-primary"><?php echo $row_sup['Sup_name'] ?></h1>
+                        <!-- Table -->
 
-                <!-- Table -->
-
-                <table class="table table-bordered table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th class="text-primary">รหัสสินค้า</th>
-                            <th class="text-primary">ชื่อสินค้า</th>
-                            <th class="text-primary">ราคาต่อหน่วย</th>
-                            <th class="text-primary">จำนวน</th>
-                            <!-- <th class="text-primary">ลดราคา</th> -->
-                            <th class="text-primary">ราคารวม</th>
-                            <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result_pro) {
-                            while ($row_pro = mysqli_fetch_array($result_pro)) {
-                        ?>
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
                                 <tr>
-                                    <td style="width:20%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
-                                    <td><?php echo $row_pro['Pro_name'] ?></td>
-                                    <td><?php echo $row_pro['Pro_salePrice'] ?></td>
-                                    <td style="width:10%;">
-                                        <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
-                                    </td>
-                                    <td>
-                                        <b class="total_perPro"></b>
-                                    </td>
+                                    <th class="text-primary">รหัสสินค้า</th>
+                                    <th class="text-primary">ชื่อสินค้า</th>
+                                    <th class="text-primary">ราคาต่อหน่วย</th>
+                                    <th class="text-primary">จำนวน</th>
+                                    <!-- <th class="text-primary">ลดราคา</th> -->
+                                    <th class="text-primary">ราคารวม</th>
+                                    <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
                                 </tr>
-                        <?php
-                            }
-                        } else {
-                            // Display an error message if the query fails
-                            echo "Query failed: " . mysqli_error($con);
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($result_pro) {
+                                    while ($row_pro = mysqli_fetch_array($result_pro)) {
+                                ?>
+                                        <tr>
+                                            <td style="width:20%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
+                                            <td><?php echo $row_pro['Pro_name'] ?></td>
+                                            <td><?php echo $row_pro['Pro_salePrice'] ?></td>
+                                            <td style="width:10%;">
+                                                <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
+                                            </td>
+                                            <td>
+                                                <b class="total_perPro"></b>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                } else {
+                                    // Display an error message if the query fails
+                                    echo "Query failed: " . mysqli_error($con);
+                                }
+                                ?>
+                            </tbody>
+                        </table>
 
-                <div class="mb-3">
-                    <b>ราคารวม : </b>
-                    <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
-                    <!-- <b class="net_price"></b> -->
-                </div>
+                        <div class="mb-3">
+                            <b>ราคารวม : </b>
+                            <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
+                            <!-- <b class="net_price"></b> -->
+                        </div>
 
-                <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
-            </form>
-        <?php
-        }
+                        <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
+                    </form>
+                    <?php
+
+                }
+                else {
+                    echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'กรุณาค้นหา ร้าค้า',
+                                confirmButtonText: 'ตกลง'
+                            })
+                        </script>
+                    ";
+                }
+            }
         ?>
 
     </div>

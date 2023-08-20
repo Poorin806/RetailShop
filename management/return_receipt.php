@@ -1,17 +1,34 @@
-<?php 
+<?php
 
-    include './connect.php';
-    
-    $sale_id = $_GET['sale_id'];
-    $sql = "SELECT sale.sale_id, sale.sale_date, sale.Net_price, sale.net_discount, product.pro_name, sale_detail.amount, sale_detail.sale_price FROM sale INNER JOIN sale_detail ON sale.sale_id = sale_detail.sale_id INNER JOIN product ON sale_detail.Pro_id = product.Pro_id WHERE sale.sale_id = '$sale_id';";
-    $sql_detail = "SELECT sale.sale_id, sale.Net_price, product.pro_name, sale_detail.amount, sale_detail.sale_price FROM sale INNER JOIN sale_detail ON sale.sale_id = sale_detail.sale_id INNER JOIN product ON sale_detail.Pro_id = product.Pro_id WHERE sale.sale_id = '$sale_id';";
-    if($result=$con->query($sql)){
-        $row=mysqli_fetch_array($result);    
+    // Connect.php
+    include_once('../import/connect.php');
+
+    if (!isset($_GET['Sale_id'])) {
+        echo "<script>window.location = '" . $rootDirectory . "management/return.php'</script>";
     }
-    
+
+    $Sale_id = $_GET['Sale_id'];
+
+    $sql = "SELECT 
+                product_return.Rel_id, product_return.Sale_id, product_return.Pro_id,
+                SUM(product_return.Amount) AS Amount, product_return.Return_date, 
+                product_return.Comment, product_return.Return_type, product.Pro_name, 
+                product.Pro_salePrice, (product.Pro_salePrice * SUM(product_return.Amount)) AS TotalReturnPerItem
+            FROM 
+                product_return, product
+            WHERE
+                (product_return.Pro_id = product.Pro_id) AND
+                (product_return.Amount <> 0) AND
+                (product_return.Sale_id = '$Sale_id')
+            GROUP BY
+                product_return.Pro_id
+            HAVING
+                SUM(product_return.Amount)
+            ORDER BY product_return.Return_date DESC;
+    ";
+    $query = $con->query($sql);
+
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +41,7 @@
         .receipt {
             border: 1px solid #000;
             padding: 20px;
-            max-width: 400px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
@@ -45,74 +62,83 @@
     </style>
 </head>
 
-<body>
 
+<body>
     <?php include_once "../import/navbar.php" ?>
 
     <div class="w-100 my-5 text-center">
-        <a href="sale.php" class="btn btn-primary" style="margin: 0 auto;">เริ่มการขายใหม่</a>
+        <a href="return.php" class="btn btn-primary" style="margin: 0 auto;">ย้อนกลับ</a>
         <button class="btn btn-warning text-light" onclick="ScrollDown('ทดสอบ')">
             พิมพ์ใบเสร็จ
             <i class="bi bi-printer-fill"></i>
         </button>
     </div>
 
-    <div class="receipt my-5" id="Receipt">
+    <div class="receipt my-5" id="ReturnReceipt">
         <div class="receipt-header">
             <h1>TATC SHOP</h1>
-            <p>ขอบคุณที่ซื้อสินค้าเรา!</p>
+            <p>รายการคืนสินค้า</p>
             <p>
-                <?php echo $sale_id?><br>
-                <?php echo $row['sale_date']?>
+                <b><?php echo $Sale_id ?></b>
+                <br>
+                <?php
+                    $data = $query->fetch_array();
+                    echo formatDateTimeThai($data['Return_date']);
+                ?>
             </p>
         </div>
         <hr>
         <div class="receipt-items">
             <div class="row">
-                <div class="col-sm-4">
-                    <h6>NAME</h6>
+                <div class="col-sm-3">
+                    <h6><b>NAME</b></h6>
                 </div>
-                <div class="col-sm-4 text-center">
-                    <h6>QTY</h6>
+                <div class="col-sm-3 text-center">
+                    <h6><b>QTY</b></h6>
                 </div>
-                <div class="col-sm-4 text-end">
-                    <h6>PRICE</h6>
+                <div class="col-sm-3 text-center">
+                    <h6><b>PRICE</b></h6>
+                </div>
+                <div class="col-sm-3 text-end">
+                    <h6><b>REASON</b></h6>
                 </div>
             </div>
-            <?php if ($result_detail = $con->query($sql_detail)) {
-                while ($row_detail = mysqli_fetch_array($result_detail)) {
-            ?>
+            <?php
+                $TotalReturn = 0;
+                while ($data = $query->fetch_array()) {
+                    $TotalReturn += $data['TotalReturnPerItem'];
+                    ?>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <span><?php echo $row_detail['pro_name'] ?></span>
+                        <div class="col-sm-3">
+                            <span><?php echo $data['Pro_name'] ?></span>
                         </div>
-                        <div class="col-sm-4 text-center">
-                            <span><?php echo number_format($row_detail['amount']) ?></span>
+                        <div class="col-sm-3 text-center">
+                            <span><?php echo $data['Amount'] ?> ชิ้น</span>
                         </div>
-                        <div class="col-sm-4 text-end">
-                            <span>฿<?php echo number_format($row_detail['sale_price'], 2) ?></span>
+                        <div class="col-sm-3 text-center">
+                            <span><?php echo number_format($data['TotalReturnPerItem'], 2) ?> บาท</span>
+                        </div>
+                        <div class="col-sm-3 text-end">
+                            <span><?php echo $data['Comment'] ?></span>
                         </div>
                     </div>
-            <?php
+                    <?php
                 }
-            } ?>
+            ?>
             <!-- Add more items as needed -->
         </div>
         <hr>
         <div class="total d-flex justify-content-between">
             <strong>Total:</strong>
-            <?php echo '฿'.number_format($row['Net_price'],2);?>
-        </div>
-        <div class="discount d-flex justify-content-between">
-            <strong>Discount:</strong>
-            <?php echo '฿'.number_format($row['net_discount'],2);?>
-        </div>
-        <div class="net_total d-flex justify-content-between">
-            <strong>Net Total:</strong>
-            <?php $net_total = $row['Net_price']-$row['net_discount']; echo '฿'.number_format($net_total,2)?>
+            <?php echo number_format($TotalReturn, 2) ?> บาท
         </div>
         <hr>
         <div class="contact-info text-center">
+            <p style="font-size: 12px;">
+                "เราขอขอบคุณที่ท่านได้ให้ความสนใจและซื้อสินค้าจากทางร้านของเราเสมอ<br>
+                ขออภัยในความไม่สะดวกที่เกิดขึ้นกับสินค้าที่ท่านได้รับ<br>
+                เรายินดีน้อมรับคำติชมและนำไปแก้ไขพัฒนาต่อไป"
+            </p>
             <p>หากมีข้อส่งสัย โปรดติดต่อ<br>โทรศัพท์ 038-238398,038-238527</p>
         </div>
     </div>
@@ -122,7 +148,7 @@
     <script>
 
         function PrintReceipt(filenameInput) {
-            var element = document.getElementById("Receipt");
+            var element = document.getElementById("ReturnReceipt");
             // var opt = {
             //     margin:			0.5,
             //     filename:		filenameInput,
@@ -133,7 +159,7 @@
 
             var opt = {
                 margin: 0,
-                filename: filenameInput + '.pdf',
+                filename: 'mypdf.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }

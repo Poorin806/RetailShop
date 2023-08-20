@@ -1,16 +1,7 @@
 <?php
 
-    // Connect to the MySQL database
-    $servername = "localhost";
-    $username_db = "root";
-    $password_db = "";
-    $dbname = "tatcshop";
-
-    $conn = new mysqli($servername, $username_db, $password_db, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    // Connect
+    include_once('import/connect.php');
 
 
 ?>
@@ -89,7 +80,7 @@
 
 $real = date('Y-m-d h:i:s a', time());
 $sql_latestCustid = "select max(Cust_id) as Cust_id from customer;";
-$result_latestCustid = $conn->query($sql_latestCustid);
+$result_latestCustid = $con->query($sql_latestCustid);
 $row_lastestCustId = mysqli_fetch_array($result_latestCustid );
 $latest_CustId = $row_lastestCustId['Cust_id'];
 if ($latest_CustId == null) {
@@ -121,15 +112,15 @@ else {
 //     // Prepare and execute the SQL query
      $sql = "INSERT INTO customer VALUES ('$latest_CustId_AutoGenerate','$name', '$last_name','$address', '$provinid', '$phone', '$real',NULL,'1')";
 
-     if ($conn->query($sql) === TRUE) {
+     if ($con->query($sql) === TRUE) {
          echo "yes";
      } else {
          // Error inserting data
-         echo "Error: " . $sql . "<br>" . $conn->error;
+         echo "Error: " . $sql . "<br>" . $con->error;
     }
 
      // Close the database connection
-     $conn->close();
+     $con->close();
  }
 ?>
         <div class="container">
@@ -163,7 +154,7 @@ else {
                                   <option value="">- จังหวัด -</option>
                                   <?php
                                     $sql = "SELECT * FROM Province";
-                                    $query = $conn->query($sql);
+                                    $query = $con->query($sql);
 
                                     while ($row = $query->fetch_array()) {
                                       ?>
