@@ -174,7 +174,7 @@
                 <div class="reminders">
                     <div class="header">
                         <i class='bx bx-note'></i>
-                        <h3>ใบเสร็จคืนสินค้า</h3>
+                        <h3>รายการใบเสร็จคืนสินค้า</h3>
                     </div>
                     <ul class="task-list">
                                 <?php
