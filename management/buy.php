@@ -83,6 +83,8 @@ if ($latest_BuyId == null) {
                             icon: 'success',
                             title: 'ซื้อสินค้าสำเร็จ',
                             confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='buy_receipt.php?Buy_id=$buy_id'
                         });
                     </script>
                 ";
