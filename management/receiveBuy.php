@@ -12,9 +12,9 @@ include 'connect.php';
 </head>
 <body>
 <?php
-
+$status = $_GET['status'];
 $buy_id = $_GET['buy_id'];
-$sql = "UPDATE buy SET receive_date = NOW(), paid_date = NOW(), paid_by = 0, receive_by = 0, Buy_status = 3";
+$sql = "UPDATE buy SET receive_date = NOW(), paid_date = NOW(), paid_by = 0, receive_by = 0, Buy_status = '$status' WHERE buy_id = '$buy_id'";
 if ($result = $con->query($sql)) {
     echo "<script>
                         Swal.fire({

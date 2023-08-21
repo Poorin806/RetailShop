@@ -60,12 +60,21 @@
                                     ?>
                                 </ol>
                             </td>
-                            <td>
+                            <td class="d-flex flex-column gap-1">
                                 <?php
                                 if ($row['Receive_date'] <> null) {
+                                    if ($row['Buy_status'] == 1) {
+                                        echo 'ยกเลิกสินค้า';
+                                    } elseif ($row['Buy_status'] == 2) {
+                                        echo 'สินค้าไม่ครบ';
+                                    } else {
+                                        echo 'รับสินค้าครบ';
+                                    }
                                 } else {
                                 ?>
-                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>" class="btn btn-outline-primary">รับสินค้า</a>
+                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=1" class="btn btn-outline-danger">ยกเลิก</a>
+                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=2" class="btn btn-outline-warning">สินค้าไม่ครบ</a>
+                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=3" class="btn btn-outline-success">สินค้าครบ</a>
                                 <?php
                                 }
                                 ?>
