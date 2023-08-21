@@ -42,10 +42,10 @@
                         <tr>
                             <td><?php echo $row['Buy_id'] ?></td>
                             <td><?php echo $row['Emp_name'] ?></td>
-                            <td><?php echo $row['Buy_date'] ?></td>
-                            <td><?php echo $row['Receive_date'] ?></td>
-                            <td><?php echo $row['Paid_date'] ?></td>
-                            <td><?php echo $row['Net_price'] ?></td>
+                            <td><?php echo formatDateThai($row['Buy_date']) ?></td>
+                            <td><?php echo formatDateThai($row['Receive_date']) ?></td>
+                            <td><?php echo formatDateThai($row['Paid_date']) ?></td>
+                            <td><?php echo number_format($row['Net_price'], 2) ?></td>
                             <td class="text-start">
                                 <ol>
                                     <?php

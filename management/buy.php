@@ -242,6 +242,7 @@ if ($latest_BuyId == null) {
             var totalCell = row.cells[4].querySelector(".total_perPro"); // Find the total cell
 
             totalCell.textContent = totalPrice.toFixed(2); // Update the total cell with the calculated total price
+
         }
     </script>
 
