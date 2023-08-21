@@ -116,8 +116,6 @@
                     <div class="header">
                         <i class='bx bx-receipt'></i>
                         <h3>รายการซื้อสินค้าเข้าร้าน</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-search'></i>
                     </div>
                     <table>
                         <thead>
@@ -130,7 +128,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id Limit 8";
+                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id ORDER BY Receive_date DESC Limit 8";
                                 $result = $con->query($sql);
                                 while ($data = mysqli_fetch_array($result)) {
                                     ?>
@@ -177,8 +175,6 @@
                     <div class="header">
                         <i class='bx bx-note'></i>
                         <h3>ใบเสร็จคืนสินค้า</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-plus'></i>
                     </div>
                     <ul class="task-list">
                                 <?php
