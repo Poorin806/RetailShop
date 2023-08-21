@@ -1,7 +1,16 @@
 <?php
 
-    // Connect
-    include_once('import/connect.php');
+    // Connect to the MySQL database
+    $servername = "localhost";
+    $username_db = "root";
+    $password_db = "";
+    $dbname = "tatcshop";
+
+    $conn = new mysqli($servername, $username_db, $password_db, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
 
 ?>
@@ -80,7 +89,7 @@
 
 $real = date('Y-m-d h:i:s a', time());
 $sql_latestCustid = "select max(Cust_id) as Cust_id from customer;";
-$result_latestCustid = $con->query($sql_latestCustid);
+$result_latestCustid = $conn->query($sql_latestCustid);
 $row_lastestCustId = mysqli_fetch_array($result_latestCustid );
 $latest_CustId = $row_lastestCustId['Cust_id'];
 if ($latest_CustId == null) {
@@ -90,13 +99,13 @@ else {
     $new_cust_id = preg_replace('/\D/', '', $latest_CustId) + 1;
     $latest_CustId_AutoGenerate = "C" . str_pad($new_cust_id, 4, '0', STR_PAD_LEFT); 
 
-    echo $latest_CustId_AutoGenerate;
+  //  echo $latest_CustId_AutoGenerate;
 }
 
 
 
 
- if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["Register"])){
      // Get the form data
      $name = $_POST["Cust_name"];
      $last_name = $_POST["Cust_lastName"];
@@ -112,16 +121,18 @@ else {
 //     // Prepare and execute the SQL query
      $sql = "INSERT INTO customer VALUES ('$latest_CustId_AutoGenerate','$name', '$last_name','$address', '$provinid', '$phone', '$real',NULL,'1')";
 
-     if ($con->query($sql) === TRUE) {
-         echo "yes";
+     if ($conn->query($sql) === TRUE) {
+        // echo "yes";
      } else {
          // Error inserting data
-         echo "Error: " . $sql . "<br>" . $con->error;
+         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
      // Close the database connection
-     $con->close();
+     //$conn->close();
  }
+   
+
 ?>
         <div class="container">
         <div class="row">
@@ -134,7 +145,7 @@ else {
                       <h2>Register Member</h2>
                       <div class="register-form">
                            <div class="form-group">
-                                 <form action="/RetailShop/login.php" method="POST" enctype="multipart/form-data"  required>
+                           <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                                <input type="text" class="form-control" name="Cust_name" placeholder="Name"  required>
                            </div>
                             <div class="form-group">
@@ -154,7 +165,7 @@ else {
                                   <option value="">- จังหวัด -</option>
                                   <?php
                                     $sql = "SELECT * FROM Province";
-                                    $query = $con->query($sql);
+                                    $query = $conn->query($sql);
 
                                     while ($row = $query->fetch_array()) {
                                       ?>
@@ -166,8 +177,8 @@ else {
                                   ?>
                                 </select>
                            </div>
-                        <input type="submit" value="Register" class="btn btn-primary">
-                        <a href="login.php" class="btn btn-primary">Login</a>
+                        <input type="submit" value="Register" class="btn btn-primary" name="Register">
+                        <a href="login.php"  class="btn btn-primary">Login</a>
                         </form>
                            
                           
@@ -184,6 +195,7 @@ else {
         </div>
             
         </div>
+        
         
     </body>
   

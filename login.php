@@ -40,19 +40,34 @@
             $data = $query->fetch_array();
 
             if ($LoginResult != 0) {
-                $_SESSION['Emp_id'] = $data['Emp_id'];
-                $_SESSION['Emp_name'] = $data['Emp_name'];
-                $_SESSION['Emp_status'] = $data['Emp_status'];
-                $_SESSION['Emp_type'] = $data['Emp_type'];
-                echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'เข้าสู่ระบบสำเร็จ',
-                        confirmButtonText: 'ตกลง'
-                    }).then((result) => {
-                        window.location='$rootDirectory'
-                    });
-                </script>";
+                // Employee status checking
+                if ($data['Emp_status'] == 1) {
+                    $_SESSION['Emp_id'] = $data['Emp_id'];
+                    $_SESSION['Emp_name'] = $data['Emp_name'];
+                    $_SESSION['Emp_status'] = $data['Emp_status'];
+                    $_SESSION['Emp_type'] = $data['Emp_type'];
+                    
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'เข้าสู่ระบบสำเร็จ',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            window.location='$rootDirectory'
+                        });
+                    </script>";
+                }
+                else {
+                    $Emp_id = $data ['Emp_id'];
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เข้าสู่ระบบไม่ได้',
+                            text: 'รหัส $Emp_id นี้ไม่อนุญาตให้เข้าสู่ระบบ',
+                            confirmButtonText: 'ตกลง'
+                        })
+                    </script>";
+                }
             }
             else {
                 echo "<script>

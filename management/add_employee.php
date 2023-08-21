@@ -80,16 +80,16 @@
                     <label class="form-label">สถานะ</label>
                     <select name="Emp_status" class="form-select" required>
                         <option value="" selected>เลือกสถานะ...</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="1">เข้าสู่ระบบได้</option>
+                        <option value="2">ไม่อนุญาตให้เข้าระบบ</option>
                     </select>
                 </div>
                 <div class="col-sm-6 mb-3">
                     <label class="form-label">ประเภทพนักงาน</label>
                     <select name="Emp_type" class="form-select" required>
                         <option value="" selected>เลือกประเภทพนักงาน...</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="1">พนักงาน</option>
+                        <option value="2">เจ้าของกิจการ</option>
                     </select>
                 </div>
             </div>
