@@ -90,12 +90,12 @@
                             while ($province_data = mysqli_fetch_array($result)) {
                                 if ($data['Province_id'] == $province_data['Province_id']) {
                                     ?>
-                                    <option selected value="<?php echo $data['Province_id'] ?>"><?php echo $province_data['Province_name'] ?></option>
+                                    <option selected value="<?php echo $province_data['Province_id'] ?>"><?php echo $province_data['Province_name'] ?></option>
                                     <?php
                                 }
                                 else {
                                     ?>
-                                    <option value="<?php echo $data['Province_id'] ?>"><?php echo $province_data['Province_name'] ?></option>
+                                    <option value="<?php echo $province_data['Province_id'] ?>"><?php echo $province_data['Province_name'] ?></option>
                                     <?php
                                 }
                             }
