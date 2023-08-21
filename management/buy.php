@@ -11,7 +11,7 @@ if ($latest_BuyId == null) {
     $latest_BuyId = 'ไม่มีรหัสการซื้อก่อนหน้า';
 } else {
     $new_buy_id = preg_replace('/\D/', '', $latest_BuyId) + 1;
-    $buy_id = "B" . str_pad($new_buy_id, 4,'0',STR_PAD_LEFT);
+    $buy_id = "B" . str_pad($new_buy_id, 4, '0', STR_PAD_LEFT);
 }
 
 ?>
@@ -34,51 +34,51 @@ if ($latest_BuyId == null) {
 
     <?php
 
-        if (isset($_POST['confirmBuy'])) {
-            // $buy_id = $_POST['buy_id'];
-            $est_id = 'EMP01';
-            // $sup_id = $_POST['sup_id'];
-            $net_price = $_POST['net_price'];
+    if (isset($_POST['confirmBuy'])) {
+        // $buy_id = $_POST['buy_id'];
+        $emp_id = $_SESSION['Emp_id'];
+        // $sup_id = $_POST['sup_id'];
+        $net_price = $_POST['net_price'];
 
-            // Insert net_price into the 'buy' table
-            $insertBuyQuery = "INSERT INTO buy (buy_id, emp_id, buy_date, net_price) VALUES ('$buy_id', '$est_id', NOW(), '$net_price')";
-            $resultBuy = mysqli_query($con, $insertBuyQuery);
+        // Insert net_price into the 'buy' table
+        $insertBuyQuery = "INSERT INTO buy (buy_id, emp_id, buy_date, net_price) VALUES ('$buy_id', '$emp_id', NOW(), '$net_price')";
+        $resultBuy = mysqli_query($con, $insertBuyQuery);
 
-            if ($resultBuy) {
-                // Get the last inserted ID (buy_id) for use in the buy_detail table
-                // $buy_id = mysqli_insert_id($con);
+        if ($resultBuy) {
+            // Get the last inserted ID (buy_id) for use in the buy_detail table
+            // $buy_id = mysqli_insert_id($con);
 
-                // Loop through the product quantities to insert into the 'buy_detail' table
-                foreach ($_POST['pro_amount'] as $pro_id => $amount) {
-                    if($amount==0){
-                        continue;
-                    }
-                    $sql_pro = "SELECT * FROM product WHERE pro_id = '$pro_id'";
-                    if($result_pro=$con->query($sql_pro)){
-                        $row_pro=mysqli_fetch_array($result_pro);
-                        $total_price = $amount * $row_pro['Pro_salePrice']; // You need to fetch $unit_price from the database or calculate it
-                    }
-
-                    // Insert into 'buy_detail'
-                    $insertDetailQuery = "INSERT INTO buy_detail (buy_id, pro_id, amount, price) VALUES ('$buy_id', '$pro_id', '$amount', '$total_price')";
-                    $resultDetail = mysqli_query($con, $insertDetailQuery);
-                    if (!$resultDetail) {
-                        // Handle the case where insertion into buy_detail fails
-                        echo "Error inserting into buy_detail: " . mysqli_error($con);
-                    }
-
-                    //Update product amount
-                    $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
-                    $result = mysqli_query($con, $sql_update);
-                    if (!$result) {
-                        // Handle the case where insertion into buy_detail fails
-                        echo "Error update product amount: " . mysqli_error($con);
-                    }
+            // Loop through the product quantities to insert into the 'buy_detail' table
+            foreach ($_POST['pro_amount'] as $pro_id => $amount) {
+                if ($amount == 0) {
+                    continue;
+                }
+                $sql_pro = "SELECT * FROM product WHERE pro_id = '$pro_id'";
+                if ($result_pro = $con->query($sql_pro)) {
+                    $row_pro = mysqli_fetch_array($result_pro);
+                    $total_price = $amount * $row_pro['Pro_salePrice']; // You need to fetch $unit_price from the database or calculate it
                 }
 
-                // Successfully inserted into both buy and buy_detail
-                // echo "Purchase successfully completed!";
-                echo "<script>
+                // Insert into 'buy_detail'
+                $insertDetailQuery = "INSERT INTO buy_detail (buy_id, pro_id, amount, price) VALUES ('$buy_id', '$pro_id', '$amount', '$total_price')";
+                $resultDetail = mysqli_query($con, $insertDetailQuery);
+                if (!$resultDetail) {
+                    // Handle the case where insertion into buy_detail fails
+                    echo "Error inserting into buy_detail: " . mysqli_error($con);
+                }
+
+                //Update product amount
+                $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
+                $result = mysqli_query($con, $sql_update);
+                if (!$result) {
+                    // Handle the case where insertion into buy_detail fails
+                    echo "Error update product amount: " . mysqli_error($con);
+                }
+            }
+
+            // Successfully inserted into both buy and buy_detail
+            // echo "Purchase successfully completed!";
+            echo "<script>
                         Swal.fire({
                             icon: 'success',
                             title: 'ซื้อสินค้าสำเร็จ',
@@ -86,11 +86,11 @@ if ($latest_BuyId == null) {
                         });
                     </script>
                 ";
-            } else {
-                // Handle the case where insertion into buy fails
-                echo "Error inserting into buy: " . mysqli_error($con);
-            }
+        } else {
+            // Handle the case where insertion into buy fails
+            echo "Error inserting into buy: " . mysqli_error($con);
         }
+    }
 
     ?>
 
@@ -133,80 +133,79 @@ if ($latest_BuyId == null) {
 
 
         <?php
-            if (isset($_POST['select_supplier'])) {
-                $sup_id = $_POST['sup_id'];
-                if ($sup_id != 'none') {
-                    $sql_sup = "SELECT * FROM supplier WHERE sup_id = '$sup_id'";
-                    if ($result_sup = $con->query($sql_sup)) {
-                        $row_sup = mysqli_fetch_array($result_sup);
-                    }
-        
-                    $sql_pro = "SELECT * FROM product WHERE sup_id = '$sup_id'";
-                    $result_pro = $con->query($sql_pro);
-
-                    ?>
-                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                        <div class="mb-3">
-                            <label for="" class="form-label">รหัสการซื้อ</label>
-                            <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
-                            <?php echo $buy_id ?>
-                        </div>
-
-                        <h1 class="text-primary"><?php echo $row_sup['Sup_name'] ?></h1>
-
-                        <!-- Table -->
-
-                        <table class="table table-bordered table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th class="text-primary">รหัสสินค้า</th>
-                                    <th class="text-primary">ชื่อสินค้า</th>
-                                    <th class="text-primary">ราคาต่อหน่วย</th>
-                                    <th class="text-primary">จำนวน</th>
-                                    <!-- <th class="text-primary">ลดราคา</th> -->
-                                    <th class="text-primary">ราคารวม</th>
-                                    <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                if ($result_pro) {
-                                    while ($row_pro = mysqli_fetch_array($result_pro)) {
-                                ?>
-                                        <tr>
-                                            <td style="width:20%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
-                                            <td><?php echo $row_pro['Pro_name'] ?></td>
-                                            <td><?php echo $row_pro['Pro_salePrice'] ?></td>
-                                            <td style="width:10%;">
-                                                <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
-                                            </td>
-                                            <td>
-                                                <b class="total_perPro"></b>
-                                            </td>
-                                        </tr>
-                                <?php
-                                    }
-                                } else {
-                                    // Display an error message if the query fails
-                                    echo "Query failed: " . mysqli_error($con);
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-
-                        <div class="mb-3">
-                            <b>ราคารวม : </b>
-                            <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
-                            <!-- <b class="net_price"></b> -->
-                        </div>
-
-                        <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
-                    </form>
-                    <?php
-
+        if (isset($_POST['select_supplier'])) {
+            $sup_id = $_POST['sup_id'];
+            if ($sup_id != 'none') {
+                $sql_sup = "SELECT * FROM supplier WHERE sup_id = '$sup_id'";
+                if ($result_sup = $con->query($sql_sup)) {
+                    $row_sup = mysqli_fetch_array($result_sup);
                 }
-                else {
-                    echo "<script>
+
+                $sql_pro = "SELECT * FROM product WHERE sup_id = '$sup_id'";
+                $result_pro = $con->query($sql_pro);
+
+        ?>
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                    <div class="mb-3">
+                        <label for="" class="form-label">รหัสการซื้อ</label>
+                        <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
+                        <?php echo $buy_id ?>
+                    </div>
+
+                    <h1 class="text-primary"><?php echo $row_sup['Sup_name'] ?></h1>
+
+                    <!-- Table -->
+
+                    <table class="table table-bordered table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-primary">รหัสสินค้า</th>
+                                <th class="text-primary">ชื่อสินค้า</th>
+                                <th class="text-primary">ราคาต่อหน่วย</th>
+                                <th class="text-primary">จำนวน</th>
+                                <!-- <th class="text-primary">ลดราคา</th> -->
+                                <th class="text-primary">ราคารวม</th>
+                                <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($result_pro) {
+                                while ($row_pro = mysqli_fetch_array($result_pro)) {
+                            ?>
+                                    <tr>
+                                        <td style="width:20%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
+                                        <td><?php echo $row_pro['Pro_name'] ?></td>
+                                        <td><?php echo $row_pro['Pro_salePrice'] ?></td>
+                                        <td style="width:10%;">
+                                            <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
+                                        </td>
+                                        <td>
+                                            <b class="total_perPro"></b>
+                                        </td>
+                                    </tr>
+                            <?php
+                                }
+                            } else {
+                                // Display an error message if the query fails
+                                echo "Query failed: " . mysqli_error($con);
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+
+                    <div class="mb-3">
+                        <b>ราคารวม : </b>
+                        <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
+                        <!-- <b class="net_price"></b> -->
+                    </div>
+
+                    <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
+                </form>
+        <?php
+
+            } else {
+                echo "<script>
                             Swal.fire({
                                 icon: 'error',
                                 title: 'กรุณาค้นหา ร้านค้า',
@@ -214,8 +213,8 @@ if ($latest_BuyId == null) {
                             })
                         </script>
                     ";
-                }
             }
+        }
         ?>
 
     </div>
