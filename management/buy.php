@@ -161,6 +161,12 @@ if (!$result_sup = $con->query($sql_supplier)) {
                 </div> -->
             </div>
 
+            <div class="mb-3">
+                <label for="searchProduct" class="form-label text-primary">ค้นหาสินค้า</label>
+                <input type="text" class="form-control" id="searchProduct" placeholder="ค้นหาชื่อสินค้า...">
+                <!-- <button type="button" class="btn btn-primary" id="searchButton">ค้นหา</button> -->
+            </div>
+
             <table class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
@@ -304,6 +310,43 @@ if (!$result_sup = $con->query($sql_supplier)) {
             updateNetPrice(); // Update the net price
         }
     </script>
+
+    <script>
+        // Get all elements with class "pro_amount"
+        var quantityInputs = document.getElementsByClassName("pro_amount");
+
+        // Loop through each input and attach an event listener
+        for (var i = 0; i < quantityInputs.length; i++) {
+            quantityInputs[i].addEventListener("input", calculateTotal);
+        }
+
+        // Function to calculate and update the total price
+        function calculateTotal(event) {
+            // ... (your existing code for calculating total per product)
+        }
+
+        // Get the search input and button
+        var searchInput = document.getElementById("searchProduct");
+        var searchButton = document.getElementById("searchButton");
+
+        // Add an event listener to the search button
+        searchInput.addEventListener("input", function() {
+            var searchTerm = searchInput.value.toLowerCase();
+
+            // Loop through each row in the table and hide rows that don't match the search term
+            var tableRows = document.querySelectorAll("tbody tr");
+            tableRows.forEach(function(row) {
+                var productName = row.cells[2].textContent.toLowerCase(); // Get the product name from the third cell
+
+                if (productName.includes(searchTerm)) {
+                    row.style.display = "table-row"; // Show the row if it matches the search term
+                } else {
+                    row.style.display = "none"; // Hide the row if it doesn't match
+                }
+            });
+        });
+    </script>
+
 
 </body>
 
