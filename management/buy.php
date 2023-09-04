@@ -14,6 +14,11 @@ if ($latest_BuyId == null) {
     $buy_id = "B" . str_pad($new_buy_id, 4, '0', STR_PAD_LEFT);
 }
 
+$sql_supplier = "SELECT * FROM supplier";
+if (!$result_sup = $con->query($sql_supplier)) {
+    echo 'เกิดข้อผิดพลาด supplier';
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +58,9 @@ if ($latest_BuyId == null) {
                 if ($amount == 0) {
                     continue;
                 }
-                $sql_pro = "SELECT * FROM product WHERE pro_id = '$pro_id'";
+                $sql_pro = "SELECT * FROM product
+                            INNER JOIN supplier ON product.sup_id = supplier.sup_id
+                            WHERE pro_id = '$pro_id'";
                 if ($result_pro = $con->query($sql_pro)) {
                     $row_pro = mysqli_fetch_array($result_pro);
                     $total_price = $amount * $row_pro['Pro_salePrice']; // You need to fetch $unit_price from the database or calculate it
@@ -108,7 +115,7 @@ if ($latest_BuyId == null) {
             </div>
         </div>
 
-        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+        <!-- <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
             <div class="mb-3">
                 <label for="" class="form-label">เลือกตัวแทนจำหน่าย</label>
                 <select name="sup_id" id="" class="form-select">
@@ -131,93 +138,88 @@ if ($latest_BuyId == null) {
 
         </form>
 
-        <hr>
+        <hr> -->
 
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+            <div class="d-flex flex-row justify-content-between mb-3">
+                <div class="">
+                    <label for="" class="form-label">รหัสการซื้อ</label>
+                    <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
+                    <?php echo $buy_id ?>
+                </div>
+                <!-- <div class="d-flex gap-2 w-50">
+                    <form action="" method="post">
+                        <select name="sup_id" id="sup_name" class="form-select">
+                            <option value="">เลือกตัวแทนจำหน่าย</option>
+                            <?php while ($row_sup = mysqli_fetch_array($result_sup)) { ?>
+                                <option value="<?php echo $row_sup['Sup_name'] ?>"><?php echo $row_sup['Sup_name'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <input type="text" name="pro_name" id="" class="form-control" placeholder="ค้นหาชื่อสินค้า...">
+                        <input type="submit" value="ค้นหา" class="btn btn-primary">
+                    </form>
+                </div> -->
+            </div>
 
-        <?php
-        if (isset($_POST['select_supplier'])) {
-            $sup_id = $_POST['sup_id'];
-            if ($sup_id != 'none') {
-                $sql_sup = "SELECT * FROM supplier WHERE sup_id = '$sup_id'";
-                if ($result_sup = $con->query($sql_sup)) {
-                    $row_sup = mysqli_fetch_array($result_sup);
-                }
-
-                $sql_pro = "SELECT * FROM product WHERE sup_id = '$sup_id'";
-                $result_pro = $con->query($sql_pro);
-
-        ?>
-                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                    <div class="mb-3">
-                        <label for="" class="form-label">รหัสการซื้อ</label>
-                        <!-- <input type="text" name="buy_id" id="" class="form-control"> -->
-                        <?php echo $buy_id ?>
-                    </div>
-
-                    <h1 class="text-primary"><?php echo $row_sup['Sup_name'] ?></h1>
-
-                    <!-- Table -->
-
-                    <table class="table table-bordered table-striped text-center">
-                        <thead>
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+                    <tr>
+                        <th class="text-primary">ตัวแทนจำหน่าย</th>
+                        <th class="text-primary">รหัสสินค้า</th>
+                        <th class="text-primary">ชื่อสินค้า</th>
+                        <th class="text-primary">ราคาต่อหน่วย</th>
+                        <th class="text-primary">จำนวน</th>
+                        <!-- <th class="text-primary">ลดราคา</th> -->
+                        <th class="text-primary">ราคารวม</th>
+                        <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // if (isset($_GET['sup_id'])) {
+                    //     $sup_id = $_GET['sup_id'];
+                    //     $sql_pro = "SELECT * FROM product
+                    //             INNER JOIN supplier ON product.sup_id = supplier.sup_id
+                    //             WHERE supplier.sup_id = '$sup_id'
+                    //             ORDER BY supplier.sup_name ASC, product.pro_id ASC";
+                    // } else {
+                    $sql_pro = "SELECT * FROM product
+                                INNER JOIN supplier ON product.sup_id = supplier.sup_id
+                                ORDER BY supplier.sup_name ASC, product.pro_id ASC";
+                    // }
+                    if ($result_pro = $con->query($sql_pro)) {
+                        while ($row_pro = mysqli_fetch_array($result_pro)) {
+                    ?>
                             <tr>
-                                <th class="text-primary">รหัสสินค้า</th>
-                                <th class="text-primary">ชื่อสินค้า</th>
-                                <th class="text-primary">ราคาต่อหน่วย</th>
-                                <th class="text-primary">จำนวน</th>
-                                <!-- <th class="text-primary">ลดราคา</th> -->
-                                <th class="text-primary">ราคารวม</th>
-                                <!-- <th class="text-primary" style="width:10%;">จัดการ</th> -->
+                                <td style="width:20%;"><?php echo $row_pro['Sup_name'] ?></td>
+                                <td style="width:10%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
+                                <td><?php echo $row_pro['Pro_name'] ?></td>
+                                <td><?php echo $row_pro['Pro_salePrice'] ?></td>
+                                <td style="width:10%;">
+                                    <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
+                                </td>
+                                <td style="width:10%;">
+                                    <b class="total_perPro">0.00</b>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if ($result_pro) {
-                                while ($row_pro = mysqli_fetch_array($result_pro)) {
-                            ?>
-                                    <tr>
-                                        <td style="width:20%;"><input type="text" class="form-control disabled text-center" name="pro_id" value="<?php echo $row_pro['Pro_id'] ?>" readonly></td>
-                                        <td><?php echo $row_pro['Pro_name'] ?></td>
-                                        <td><?php echo $row_pro['Pro_salePrice'] ?></td>
-                                        <td style="width:10%;">
-                                            <input type="number" class="form-control pro_amount" value="0" min="0" max="100" name="pro_amount[<?php echo $row_pro['Pro_id']; ?>]">
-                                        </td>
-                                        <td>
-                                            <b class="total_perPro"></b>
-                                        </td>
-                                    </tr>
-                            <?php
-                                }
-                            } else {
-                                // Display an error message if the query fails
-                                echo "Query failed: " . mysqli_error($con);
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                    <?php
+                        }
+                    } else {
+                        // Display an error message if the query fails
+                        echo "Query failed: " . mysqli_error($con);
+                    }
+                    ?>
+                </tbody>
+            </table>
 
-                    <div class="mb-3">
-                        <b>ราคารวม : </b>
-                        <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
-                        <!-- <b class="net_price"></b> -->
-                    </div>
+            <div class="mb-3">
+                <b>ราคารวม : </b>
+                <input type="text" name="net_price" id="net_price" class="form-control w-25" readonly>
+                <!-- <b class="net_price"></b> -->
+            </div>
 
-                    <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
-                </form>
-        <?php
-
-            } else {
-                echo "<script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'กรุณาค้นหา ร้านค้า',
-                                confirmButtonText: 'ตกลง'
-                            })
-                        </script>
-                    ";
-            }
-        }
-        ?>
+            <button type="submit" class="btn btn-success" name="confirmBuy">ยืนยันการซื้อ</button>
+        </form>
 
     </div>
 
@@ -235,18 +237,19 @@ if ($latest_BuyId == null) {
             var input = event.target; // The input element that triggered the event
             var row = input.closest("tr"); // Find the closest parent <tr> element
 
-            var unitPrice = parseFloat(row.cells[2].textContent); // Get the unit price from the third cell
+            var unitPrice = parseFloat(row.cells[3].textContent); // Get the unit price from the third cell
             var quantity = parseFloat(input.value); // Get the entered quantity from the input
 
-            var totalPrice = unitPrice * quantity; // Calculate the total price
-            var totalCell = row.cells[4].querySelector(".total_perPro"); // Find the total cell
+            var totalCell = row.cells[5].querySelector(".total_perPro"); // Find the total cell
 
-            totalCell.textContent = totalPrice.toFixed(2); // Update the total cell with the calculated total price
-
+            if (isNaN(quantity) || quantity === null || quantity === undefined) {
+                totalCell.textContent = "0.00"; // Set total cell to 0.00 if quantity is not a valid number
+            } else {
+                var totalPrice = unitPrice * quantity; // Calculate the total price
+                totalCell.textContent = totalPrice.toFixed(3);
+            }
         }
     </script>
-
-    <!-- Your existing code for the form and table -->
 
     <script>
         // Get all elements with class "total_perPro"
@@ -272,7 +275,7 @@ if ($latest_BuyId == null) {
         // Update the net price whenever total_perPro values change
         function updateNetPrice() {
             var netPrice = calculateNetPrice();
-            netPriceElement.value = netPrice; // Set value of input instead of textContent
+            netPriceElement.value = netPrice; // Set the value of the input element
         }
 
         // Attach an event listener to each input with class "pro_amount"
@@ -286,18 +289,17 @@ if ($latest_BuyId == null) {
             var input = event.target; // The input element that triggered the event
             var row = input.closest("tr"); // Find the closest parent <tr> element
 
-            var unitPrice = parseFloat(row.cells[2].textContent); // Get the unit price from the third cell
+            var unitPrice = parseFloat(row.cells[3].textContent); // Get the unit price from the third cell
             var quantity = parseFloat(input.value); // Get the entered quantity from the input
 
-            // Handle NaN or empty values
-            if (isNaN(quantity)) {
-                quantity = 0; // Set quantity to 0 if it's NaN or empty
+            var totalCell = row.cells[5].querySelector(".total_perPro"); // Find the total cell
+
+            if (isNaN(quantity) || quantity === null || quantity === undefined) {
+                totalCell.textContent = "0.00"; // Set total cell to 0.00 if quantity is not a valid number
+            } else {
+                var totalPrice = unitPrice * quantity; // Calculate the total price
+                totalCell.textContent = totalPrice.toFixed(3);
             }
-
-            var totalPrice = unitPrice * quantity; // Calculate the total price
-            var totalCell = row.cells[4].querySelector(".total_perPro"); // Find the total cell
-
-            totalCell.textContent = isNaN(totalPrice) ? "" : totalPrice.toFixed(2); // Update the total cell with the calculated total price or leave it empty
 
             updateNetPrice(); // Update the net price
         }

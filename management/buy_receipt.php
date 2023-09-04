@@ -1,23 +1,22 @@
-<?php 
+<?php
 
-    include './connect.php';
-    
-    if (isset($_GET['Buy_id'])) {
-        $Buy_id = $_GET['Buy_id'];
+include './connect.php';
 
-        $sql = "SELECT Buy.*, employee.Emp_name 
+if (isset($_GET['Buy_id'])) {
+    $Buy_id = $_GET['Buy_id'];
+
+    $sql = "SELECT Buy.*, employee.Emp_name 
                 FROM Buy, employee
                 WHERE 
                     (Buy.Emp_id = employee.Emp_id) AND
                     (Buy_id = '$Buy_id')
         ";
-        $query = $con->query($sql);
-        $data = $query->fetch_array();
-    }
-    else {
-        echo "<script>window.location = 'buy.php';</script>";
-    }
-    
+    $query = $con->query($sql);
+    $data = $query->fetch_array();
+} else {
+    echo "<script>window.location = 'buy.php';</script>";
+}
+
 ?>
 
 
@@ -92,41 +91,49 @@
                 </div>
             </div>
             <?php
-                $sql_detail = "SELECT buy_detail.*, product.Pro_name, supplier.Sup_name
-                        FROM buy_detail, product, supplier
-                        WHERE
-                            (buy_detail.pro_id = product.Pro_id) AND
-                            (product.Sup_id = supplier.Sup_id) AND
-                            (buy_detail.buy_id = '$Buy_id')
-                ";
-                $total_price = 0;
-                if ($result_detail = $con->query($sql_detail)) {
-                    while ($row_detail = mysqli_fetch_array($result_detail)) {
-                        $total_price += $row_detail['price'];
-                        ?>
-                        <div class="row">
+            $sql_detail = "SELECT buy_detail.*, product.Pro_name, supplier.Sup_name, supplier.Sup_id
+                            FROM buy_detail, product, supplier
+                            WHERE
+                                (buy_detail.pro_id = product.Pro_id) AND
+                                (product.Sup_id = supplier.Sup_id) AND
+                                (buy_detail.buy_id = '$Buy_id')
+                            ORDER BY supplier.Sup_name";
+            $previous_supplier_id = null; // Variable to track the previous supplier's ID
+            $total_price = 0;
+            if ($result_detail = $con->query($sql_detail)) {
+                while ($row_detail = mysqli_fetch_array($result_detail)) {
+                    $current_supplier_id = $row_detail['Sup_id'];
+                    $total_price += $row_detail['price'];
+            ?>
+                    <div class="row">
+                        <?php if ($current_supplier_id !== $previous_supplier_id) { ?>
                             <div class="col-sm-4">
                                 <span><?php echo $row_detail['Sup_name'] ?></span>
                             </div>
-                            <div class="col-sm-3">
-                                <span><?php echo $row_detail['Pro_name'] ?></span>
-                            </div>
-                            <div class="col-sm-3 text-center">
-                                <span><?php echo number_format($row_detail['Amount']) ?></span>
-                            </div>
-                            <div class="col-sm-2 text-end">
-                                <span>฿<?php echo number_format($row_detail['price'], 2) ?></span>
-                            </div>
+                        <?php } else { ?>
+                            <div class="col-sm-4"></div>
+                        <?php } ?>
+                        <div class="col-sm-3">
+                            <span><?php echo $row_detail['Pro_name'] ?></span>
                         </div>
-                    <?php
-                    }
-            } ?>
+                        <div class="col-sm-3 text-center">
+                            <span><?php echo number_format($row_detail['Amount']) ?></span>
+                        </div>
+                        <div class="col-sm-2 text-end">
+                            <span>฿<?php echo number_format($row_detail['price'], 2) ?></span>
+                        </div>
+                    </div>
+            <?php
+                    $previous_supplier_id = $current_supplier_id; // Update the previous supplier's ID
+                }
+            }
+            ?>
             <!-- Add more items as needed -->
         </div>
         <hr>
         <div class="total d-flex justify-content-between">
             <strong>Total:</strong>
-            <?php echo '฿'.number_format($total_price, 2);?>
+            <?php echo '฿' . number_format($total_price, 2); ?>
         </div>
         <hr>
         <div class="contact-info text-center">
@@ -137,7 +144,6 @@
     <?php include_once "../import/js.php"; ?>
 
     <script>
-
         function PrintReceipt(filenameInput) {
             var element = document.getElementById("Receipt");
             // var opt = {
@@ -151,12 +157,21 @@
             var opt = {
                 margin: 0,
                 filename: filenameInput + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
             };
 
-            html2pdf().set(opt).from(element).outputPdf('datauristring').then(function (pdfDataUri) {
+            html2pdf().set(opt).from(element).outputPdf('datauristring').then(function(pdfDataUri) {
                 // [Preview file in new tab]
                 var newTab = window.open();
                 newTab.document.open();
@@ -168,7 +183,7 @@
                 // var downloadLink = document.createElement('a');
                 // downloadLink.href = pdfDataUri;
                 // downloadLink.download = filenameInput + ".pdf";
-                
+
                 // คลิกลิงค์ดาวน์โหลด PDF
                 // downloadLink.click();
             });
@@ -186,7 +201,6 @@
 
             PrintReceipt(name);
         }
-
     </script>
 
 </body>
