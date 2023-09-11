@@ -75,12 +75,12 @@ if (!$result_sup = $con->query($sql_supplier)) {
                 }
 
                 //Update product amount
-                $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
-                $result = mysqli_query($con, $sql_update);
-                if (!$result) {
-                    // Handle the case where insertion into buy_detail fails
-                    echo "Error update product amount: " . mysqli_error($con);
-                }
+                // $sql_update = "UPDATE product SET pro_amount = pro_amount + '$amount' WHERE pro_id = '$pro_id'";
+                // $result = mysqli_query($con, $sql_update);
+                // if (!$result) {
+                //     // Handle the case where insertion into buy_detail fails
+                //     echo "Error update product amount: " . mysqli_error($con);
+                // }
             }
 
             // Successfully inserted into both buy and buy_detail
@@ -182,16 +182,14 @@ if (!$result_sup = $con->query($sql_supplier)) {
                 </thead>
                 <tbody>
                     <?php
-                    // if (isset($_GET['sup_id'])) {
-                    //     $sup_id = $_GET['sup_id'];
-                    //     $sql_pro = "SELECT * FROM product
-                    //             INNER JOIN supplier ON product.sup_id = supplier.sup_id
-                    //             WHERE supplier.sup_id = '$sup_id'
-                    //             ORDER BY supplier.sup_name ASC, product.pro_id ASC";
-                    // } else {
                     $sql_pro = "SELECT * FROM product
                                 INNER JOIN supplier ON product.sup_id = supplier.sup_id
-                                ORDER BY supplier.sup_name ASC, product.pro_id ASC";
+                                ORDER BY supplier.sup_id;";
+                    // $sql_pro = "SELECT * FROM buy_detail
+                    //             INNER JOIN buy ON buy.buy_id = buy_detail.buy_id
+                    //             INNER JOIN product ON buy_detail.pro_id = product.pro_id
+                    //             INNER JOIN supplier ON product.sup_id = supplier.sup_id
+                    //             ORDER BY Buy.Buy_id;";
                     // }
                     if ($result_pro = $con->query($sql_pro)) {
                         while ($row_pro = mysqli_fetch_array($result_pro)) {

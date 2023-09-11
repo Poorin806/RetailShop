@@ -72,9 +72,9 @@
                                     }
                                 } else {
                                 ?>
-                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=1" class="btn btn-outline-danger">ยกเลิก</a>
-                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=2" class="btn btn-outline-warning">สินค้าไม่ครบ</a>
-                                    <a href="receiveBuy.php?buy_id=<?php echo $buy_id ?>&status=3" class="btn btn-outline-success">สินค้าครบ</a>
+                                    <a href="update_buy.php?buy_id=<?php echo $buy_id ?>&status=1" class="btn btn-outline-danger">ยกเลิก</a>
+                                    <!-- <a href="update_buy.php?buy_id=<?php echo $buy_id ?>&status=2" class="btn btn-outline-warning">สินค้าไม่ครบ</a> -->
+                                    <a href="update_buy.php?buy_id=<?php echo $buy_id ?>&status=3" class="btn btn-outline-success">สินค้าครบ</a>
                                 <?php
                                 }
                                 ?>
