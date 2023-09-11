@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>คืนสินค้า</title>
     <?php include_once "../import/css.php"; ?>
+    
+    <!-- JQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 </head>
 
@@ -46,7 +49,7 @@
                 <div class="col-sm-1">
                     <label for="" class="form-label"></label>
                     <!-- <input type="submit" value="ค้นหา" name="search" class="btn btn-primary"> -->
-                    <button type="button" class="btn btn-primary" id="search_sale_id" onclick="getSaleData()">ค้นหา</button>
+                    <button type="button" class="btn btn-primary" id="search_sale_id" onclick="Search()">ค้นหา</button>
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="form-label">วันที่</label>
@@ -65,7 +68,27 @@
             <div class="title text-secondary">
                 <h4><i class="bi bi-2-circle-fill text-primary"></i> เลือกสินค้าที่ต้องการคืน</h4>
             </div>
-            <table class="table table-bordered table-striped text-center" id="returnTable">
+            <div class="container">
+                <div class="mx-5 my-4 alert alert-primary" role="alert">
+                    <h5><b><i>ประวัติการคืนสินค้า</i></b></h5>
+                    <table class="table table-striped table-bordered text-center align-middle table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-primary">รหัสสินค้า</th>
+                                <th class="text-primary">ชื่อสินค้า</th>
+                                <th class="text-primary">จำนวน</th>
+                                <th class="text-primary">ราคาต่อหน่วย</th>
+                                <th class="text-primary">ราคารวม</th>
+                                <th class="text-primary">วันที่คืน</th>
+                            </tr>
+                        </thead>
+                        <tbody id="returnHistory">
+                                <!-- Js Fetch_data_return.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped text-center table-hover">
                 <thead>
                     <tr>
                         <th class="text-primary">รหัสสินค้า</th>
@@ -77,10 +100,8 @@
                         <th class="text-primary" style="width:10%;">จำนวนการคืน</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <!-- Fetch_data_return.js -->
-                    </tr>
+                <tbody id="returnTable">
+                    <!-- Fetch_data_return.js -->
                 </tbody>
             </table>
 
@@ -113,69 +134,179 @@
 
     <!-- JavaScript -->
     <script>
+
+        var Pro_id_arr = [];
+        var Amount_arr = [];
+        var Return_arr = [];
         
-        var Hi = document.getElementById('Hi');
-        var data = [];
-        var return_data = [];
+        var btnConfirmReturn = document.getElementById("btnConfirmReturn");
+        btnConfirmReturn.disabled = true;
 
-        function ReturnUpdate() {
+        function Search() {
             var Sale_id = document.getElementById("sale_id").value;
-            var Comment = document.getElementById("comment").value;
-            var index = 0;
-            var counter = 0;
-            // return_data.push({id : "key1"});
-            //Add new index into object
-            // return_data[0]['Name'] = "key2";
+            var returnHistory = document.getElementById("returnHistory");
+            var returnTable = document.getElementById("returnTable");
+            var sale_date = document.getElementById("sale_date");
+            var cust_id = document.getElementById("cust_id");
+            var cust_name = document.getElementById("cust_name");
 
-            for (var i = 0; i < data.length; i++) {
-                if (counter > 6) {
-                    counter = 0;
-                    index = index + 1;
-                    return_data.push({pro_id : data[i]});
-                    counter = counter + 1;
+            returnHistory.innerHTML = "";
+            returnTable.innerHTML = "";
+
+            Pro_id_arr = [];
+            Amount_arr = [];
+            Return_arr = [];
+
+            btnConfirmReturn.disabled = false;
+
+            // Ajax for call return history
+            $.ajax({
+                url: "js/get_sale_data.php",
+                type: "POST",
+                data: {
+                    function: "SearchSale_Info",
+                    Sale_id: Sale_id
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    sale_date.value = data.sale_date;
+                    cust_id.value = data.cust_id;
+                    cust_name.value = data.cust_name;
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error);
                 }
-                else {
-                    if (i == 0) {
-                        return_data.push({pro_id : data[i]});
-                        counter = counter + 1;
+            });
+
+            // Ajax for call return history
+            $.ajax({
+                url: "js/get_sale_data.php",
+                type: "POST",
+                data: {
+                    function: "SearchSale",
+                    Sale_id: Sale_id
+                },
+                dataType: "JSON",
+                success: function(data) {
+
+                    sale_date
+
+                    if (data === false) {
+                        returnHistory.innerHTML = `
+                            <tr>
+                                <td colspan="6">
+                                    <div class="alert alert-warning m-0" role="alert">ไม่มีประวัติการคืน</div>
+                                </td>
+                            </tr>
+                        `;
                     }
                     else {
-                        switch (counter) {
-                            case 0:
-                                return_data[index]["pro_id"] = data[i];
-                                break;
-                            case 1:
-                                return_data[index]["pro_name"] = data[i];
-                                break;
-                            case 2:
-                                return_data[index]["amount"] = data[i];
-                                break;
-                            case 3:
-                                return_data[index]["sale_price"] = data[i];
-                                break;
-                            case 4:
-                                return_data[index]["discount"] = data[i];
-                                break;
-                            case 5:
-                                return_data[index]["total"] = data[i];
-                                break;
-                            case 6:
-                                return_data[index]["return_amount"] = data[i];
-                                break;
+                        for (var i = 0; i < data.length; i++) {
+                            returnHistory.innerHTML += `
+                                <tr>
+                                    <td>${ data[i].Pro_id }</td>
+                                    <td>${ data[i].Pro_name }</td>
+                                    <td>${ data[i].Amount }</td>
+                                    <td>${ data[i].Pro_salePrice }</td>
+                                    <td>${ data[i].total }</td>
+                                    <td>${ data[i].Return_date }</td>
+                                </tr>
+                            `
                         }
-                        counter = counter + 1;
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error);
+                }
+            });
+
+            // Ajax for call sale detail
+            $.ajax({
+                url: "js/get_sale_data.php",
+                type: "POST",
+                data: {
+                    function: "getSaleDetail",
+                    Sale_id: Sale_id
+                },
+                dataType: "JSON",
+                success: function(data) {
+
+                    if (data === false) {
+                        returnTable.innerHTML = `
+                            <tr>
+                                <td colspan="6">
+                                    <div class="alert alert-danger m-0" role="alert">เกิดข้อผิดพลาด</div>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                    else {
+                        for (var i = 0; i < data.length; i++) {
+                            returnTable.innerHTML += `
+                                <tr class="align-middle">
+                                    <td>${ data[i].Pro_id }</td>
+                                    <td>${ data[i].Pro_name }</td>
+                                    <td>${ data[i].Amount }</td>
+                                    <td>${ data[i].Sale_price }</td>
+                                    <td>${ data[i].Discount }</td>
+                                    <td>${ data[i].Total }</td>
+                                    <td><input type="number" id="${ data[i].Pro_id }" class="form-control" min="0" max="${ data[i].Amount }"></td>
+                                </tr>
+                            `
+                            Pro_id_arr.push(data[i].Pro_id);
+                            Amount_arr.push(data[i].Amount);
+                        }
+                        returnTable.innerHTML += `
+                            <tr>
+                                <td>
+                                    <textarea class="form-control" row="1" name="Pro_id_List" readonly hidden>${ Pro_id_arr.join(', ') }</textarea>
+                                </td>
+                                <td>
+                                    <textarea class="form-control" row="1" name="Amount_List" readonly hidden>${ Amount_arr.join(', ') }</textarea>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error);
+                }
+            });
+        }
+
+        function ReturnConfirm() {
+            var Sale_id = document.getElementById("sale_id").value;
+            var total_return_amount = 0;
+            var Hi = document.getElementById("Hi");
+            var comment = document.getElementById("comment").value;
+
+            Hi.innerHTML = "";
+
+            for (var i = 0; i < Pro_id_arr.length; i++) {
+                var temp_amount = document.getElementById(Pro_id_arr[i]).value;
+
+                if ((temp_amount == 0) || (temp_amount == null)) {
+                    Return_arr[i] = 0;
+                }
+                else {
+                    Return_arr[i] = temp_amount;
                 }
             }
-            return_data.push({comment : Comment});
-            console.log(return_data);
 
-            // Send AJAX request to the PHP file
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "js/update_return.php?Sale_id=" + Sale_id, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            // Ajax for call sale detail
+            $.ajax({
+                url: "js/get_sale_data.php",
+                type: "POST",
+                data: {
+                    function: "confirmReturn",
+                    Sale_id: Sale_id,
+                    Pro_id_arr: Pro_id_arr,
+                    Return_arr: Return_arr,
+                    Comment: comment
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data);
                     Swal.fire({
                         icon: 'success',
                         title: 'คืนสินค้าสำเร็จ',
@@ -183,45 +314,16 @@
                     }).then((result) => {
                         window.location = "return_receipt.php?Sale_id=" + Sale_id;
                     });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error);
                 }
-            };
-
-            // Prepare data and send the request
-            xhr.send(JSON.stringify(return_data));
-            }
-
-        // ฟังก์ชันแสดงข้อมูลใน innerHTML ของ div อื่น
-        function displayDataDiv(row) {
-            var cells = row.getElementsByTagName("td");
-
-            for (var i = 0; i < cells.length; i++) {
-                var cellContent = cells[i].innerText;
-                var inputField = cells[i].querySelector("input");
-                
-
-
-                if (inputField) {
-                    data.push(inputField.value);
-                } else {
-                    data.push(cellContent);
-                }
-            }
-        }
-
-        function ReturnConfirm() {
-            const returnTable = document.getElementById('returnTable');
-            var rows = returnTable.getElementsByTagName('tr');
-
-            for (var i = 0; i < rows.length; i++) {
-                displayDataDiv(rows[i]);
-            }
-
-            ReturnUpdate();
+            });
         }
     </script>
     
-    <script src="js/get_sale_data.js"></script>
-    <script src="js/fetch_data_return.js"></script>
+    <!-- <script src="js/get_sale_data.js"></script>
+    <script src="js/fetch_data_return.js"></script> -->
     <!-- <script src="js/update_pro_amount.js"></script> -->
     <?php include_once "../import/js.php"; ?>
 </body>

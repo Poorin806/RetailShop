@@ -14,12 +14,29 @@ function getSaleData() {
             } else {
                 fetchDataAndRefreshTable(sale_id);
                 var response = JSON.parse(xhr.responseText);
+                var returnHistory = document.getElementById("returnHistory");
 
                 // Update the input fields with the received data
                 document.getElementById("sale_id").value = response.sale_id;
                 document.getElementById("cust_id").value = response.cust_id;
                 document.getElementById("cust_name").value = response.cust_name;
                 document.getElementById("sale_date").value = response.sale_date;
+
+                $.ajax({
+                    url: "js/get_sale_data.php",
+                    method: "POST",
+                    data: {
+                        function: "returnHistory",
+                    },
+                    success: function(data) {
+                        // Do something
+                        alert(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error:", error);
+                    }
+                });
+
             }
         }
     };
