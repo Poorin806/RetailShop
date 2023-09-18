@@ -77,7 +77,7 @@
                         </span>
                     </li>
                 </a>
-                <a class="text-decoration-none" href="/RetailShop/management/supplier.php">
+                <a class="text-decoration-none">
                     <li><i class='bx bx-home-alt'></i>
                         <span class="info">
                             <h3>
@@ -138,13 +138,10 @@
                         <span class="info">
                             <h3>
                                 <?php 
-                                    $query = "SELECT * FROM product";
-                                    $result = mysqli_query($con, $query);
-                                    $num_rows = mysqli_num_rows($result);
-                                    echo $num_rows;
+
                                 ?>
                             </h3>
-                            <p>สินค้าคงเหลือ</p>
+                            <p>สินค้ายอดขายน้อย</p>
                         </span>
                     </li>
                 </a>
@@ -153,18 +150,10 @@
                         <span class="info">
                             <h3>
                                 <?php 
-                                    $query = "SELECT Product.Pro_name, SUM(sale_detail.Amount) AS total_amount
-                                    FROM sale_detail
-                                    JOIN product ON sale_detail.Pro_id = product.Pro_id
-                                    GROUP BY product.Pro_name
-                                    ORDER BY total_amount DESC
-                                    LIMIT 1;";
-                                    $result = mysqli_query($con, $query);
-                                    $row = mysqli_fetch_assoc($result);
-                                    echo $row['Pro_name'];
+                                    
                                 ?>
                             </h3>
-                            <p>###</p>
+                            <p>รายได้ประจำเดือน</p>
                         </span>
                     </li>
                 </a>
