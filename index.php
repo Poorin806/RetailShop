@@ -109,7 +109,83 @@
                     </li>
                 </a>
             </ul>
-            <!-- End of Insights -->
+            <!-- End of Insights 1-->
+            
+            <!-- Insights 2-->
+            <ul class="insights">
+                <a class="text-decoration-none">
+                    <li><i class='bx bx-line-chart'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT Product.Pro_name, SUM(sale_detail.Amount) AS total_amount
+                                    FROM sale_detail
+                                    JOIN product ON sale_detail.Pro_id = product.Pro_id
+                                    GROUP BY product.Pro_name
+                                    ORDER BY total_amount DESC
+                                    LIMIT 1;";
+                                    $result = mysqli_query($con, $query);
+                                    $row = mysqli_fetch_assoc($result);
+                                    echo $row['Pro_name'];
+                                ?>
+                            </h3>
+                            <p>สินค้าขายดี <br> ยอดขาย <?php echo number_format($row['total_amount'])?> ชิ้น</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none">
+                    <li><i class='bx bx-line-chart-down'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT * FROM product";
+                                    $result = mysqli_query($con, $query);
+                                    $num_rows = mysqli_num_rows($result);
+                                    echo $num_rows;
+                                ?>
+                            </h3>
+                            <p>สินค้าคงเหลือ</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none" >
+                    <li><i class='bx bx-task'></i>
+                        <span class="info">
+                            <h3>
+                                <?php 
+                                    $query = "SELECT Product.Pro_name, SUM(sale_detail.Amount) AS total_amount
+                                    FROM sale_detail
+                                    JOIN product ON sale_detail.Pro_id = product.Pro_id
+                                    GROUP BY product.Pro_name
+                                    ORDER BY total_amount DESC
+                                    LIMIT 1;";
+                                    $result = mysqli_query($con, $query);
+                                    $row = mysqli_fetch_assoc($result);
+                                    echo $row['Pro_name'];
+                                ?>
+                            </h3>
+                            <p>###</p>
+                        </span>
+                    </li>
+                </a>
+                <a class="text-decoration-none">
+                    <li><i class='bx bxs-bar-chart-alt-2'></i>
+                        <span class="info">
+                            <h3>
+                            <?php
+                                $query = "SELECT SUM((Sale.Net_price - Sale.Net_discount)) AS Total FROM Sale WHERE YEAR(Sale.Sale_date) = 2566;";
+                                $result = mysqli_query($con, $query);
+                                $row = mysqli_fetch_assoc($result);
+                                $total = $row['Total'];
+                                echo number_format($total, 2);
+                            ?>
+                            </h3>
+                            <p>รายได้ประจำปี 2566</p>
+                        </span>
+                    </li>
+                </a>
+            </ul>
+            <!-- End of Insights 2-->
 
             <div class="bottom-data">
                 <div class="orders">
@@ -128,7 +204,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id ORDER BY Receive_date DESC Limit 8";
+                                $sql = "SELECT Buy.*, Employee.Emp_name FROM Buy INNER JOIN Employee ON Buy.Emp_id = Employee.Emp_id ORDER BY Receive_date DESC Limit 5";
                                 $result = $con->query($sql);
                                 while ($data = mysqli_fetch_array($result)) {
                                     ?>
@@ -178,7 +254,7 @@
                     </div>
                     <ul class="task-list">
                                 <?php
-                                    $sql = "SELECT Product_Return.*, Product.Pro_name FROM Product_Return INNER JOIN Product ON Product_Return.pro_id = Product.Pro_id Limit 6";
+                                    $sql = "SELECT Product_Return.*, Product.Pro_name FROM Product_Return INNER JOIN Product ON Product_Return.pro_id = Product.Pro_id Limit 5";
                                     $result = $con->query($sql);
                                     while ($data = mysqli_fetch_array($result)) {
                                     ?>
