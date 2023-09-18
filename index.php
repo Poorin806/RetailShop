@@ -138,8 +138,18 @@
                         <span class="info">
                             <h3>
                                 <?php 
-
+                                    $sql = "SELECT product.Pro_name, SUM(sale_detail.Amount) AS Total_Amount
+                                            FROM sale_detail
+                                            JOIN product ON sale_detail.Pro_id = product.Pro_id
+                                            GROUP BY sale_detail.Pro_id
+                                            ORDER BY sale_detail.Pro_id, Total_Amount
+                                            LIMIT 1
+                                    ";
+                                    $result = $con->query($sql);
+                                    $row = $result->fetch_assoc();
+                                    echo $row['Pro_name'];
                                 ?>
+                                <span><?php echo $row['Total_Amount'] ?> ชิ้น</span>
                             </h3>
                             <p>สินค้ายอดขายน้อย</p>
                         </span>
@@ -150,7 +160,13 @@
                         <span class="info">
                             <h3>
                                 <?php 
-                                    
+                                    $sql = "SELECT SUM(sale.Net_price - sale.Net_discount)  AS Total
+                                            FROM sale
+                                            WHERE DATE_FORMAT(sale.Sale_date, '%Y-%m') = (SELECT MAX(DATE_FORMAT(sale.Sale_date, '%Y-%m')) FROM sale)
+                                    ";
+                                    $result = $con->query($sql);
+                                    $row = $result->fetch_assoc();
+                                    echo number_format($row['Total'], 2);
                                 ?>
                             </h3>
                             <p>รายได้ประจำเดือน</p>
